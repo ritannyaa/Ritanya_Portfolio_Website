@@ -1,0 +1,747 @@
+/* ---------------------------------------------------------------------------
+   Marketeam hero — self-contained styles for components/sections/Hero.tsx.
+
+   Everything is scoped under .mkt-hero (and prefixed `mkt-`) so none of it
+   leaks into the rest of the site. Colour comes entirely from the global
+   tokens in app/globals.css — the hero used to run its own purple palette on
+   a photographic background, which read as a different site from every other
+   section. It now sits on the same --color-surface with the same single
+   accent blue, and only the layout/motion is bespoke.
+
+   Hand-written CSS rather than utilities because the design leans on things
+   Tailwind has no vocabulary for, such as the orbital transform chains.
+--------------------------------------------------------------------------- */
+
+.mkt-hero {
+  --mkt-accent: var(--color-accent);
+  --mkt-accent-soft: var(--color-accent-soft);
+  --mkt-circles-scale: 1;
+
+  position: relative;
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
+  overflow: hidden;
+  /* No opaque base layer here — this is what keeps the page one continuous
+     canvas. The site already has a single shared backdrop: body's
+     --color-surface plus the fixed AmbientBackground layer (mesh, orbs, cursor
+     glow) that spans every section. Ending this stack in an opaque
+     var(--color-surface) painted over that shared layer for the hero's height
+     only, so the ambient wash reappeared the instant the hero ended — a hard
+     one-row step of ~29 RGB at the boundary, which read as a divider line.
+
+     Leaving the base transparent lets the same shared backdrop show through
+     here as everywhere else. These three radials stay as a hero-local accent;
+     they are top-weighted and fully transparent well before the bottom edge,
+     so they add nothing at the boundary and cannot reintroduce a seam. */
+  background:
+    radial-gradient(ellipse 85% 55% at 18% 0%, rgba(59, 130, 246, 0.22), transparent 62%),
+    radial-gradient(ellipse 65% 45% at 88% 18%, rgba(96, 165, 250, 0.13), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 62% 42%, rgba(37, 99, 235, 0.1), transparent 65%);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* -------------------------------------------------------------- hero body -- */
+
+.mkt-body {
+  display: flex;
+  width: 100%;
+  max-width: 1920px;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  margin: 0 auto;
+  /* Top padding clears the fixed global navbar — the hero has no header of
+     its own, so nothing else reserves that space. */
+  padding: 184px 64px 0;
+}
+
+.mkt-left {
+  flex: 0 1 600px;
+  animation: mkt-fade-up 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.mkt-heading {
+  margin: 0;
+  font-family: var(--font-urbanist), var(--font-inter), sans-serif;
+  font-size: 64px;
+  font-weight: 600;
+  line-height: 64px;
+  letter-spacing: -1.5px;
+  color: var(--color-ink);
+  white-space: pre-line;
+}
+
+/* Same light-to-accent shimmer the site uses for the hero name elsewhere —
+   the emphasis half of the headline, not a second colour scheme. */
+.mkt-heading-accent {
+  background-image: linear-gradient(
+    100deg,
+    #f1f5f9 0%,
+    var(--color-accent-soft) 45%,
+    var(--color-accent) 62%,
+    #f1f5f9 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.mkt-heading-name {
+  background-size: 200% 100%;
+  animation: mkt-name-shimmer 3s ease-in-out infinite;
+}
+
+@keyframes mkt-name-shimmer {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mkt-heading-name {
+    animation: none;
+  }
+}
+
+.mkt-caret {
+  display: inline-block;
+  width: 3px;
+  margin-left: 2px;
+  color: var(--mkt-accent-soft);
+  background: currentColor;
+  animation: mkt-blink 0.8s step-end infinite;
+  /* Matches the cap height of the 64px heading so the caret doesn't sit
+     taller than the text it trails. */
+  height: 0.85em;
+  vertical-align: -0.12em;
+}
+
+@keyframes mkt-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.mkt-cta {
+  margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  animation: mkt-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 3.2s both;
+}
+
+.mkt-social-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  border-radius: 999px;
+  background: var(--color-surface-elevated);
+  padding: 11px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: transform 200ms ease, border-color 200ms ease, background-color 200ms ease, color 200ms ease;
+}
+
+.mkt-social-link:hover {
+  border-color: var(--mkt-accent-soft);
+  background: var(--mkt-accent);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.mkt-social-link:focus-visible {
+  outline: 3px solid var(--mkt-accent-soft);
+  outline-offset: 3px;
+}
+
+.mkt-cursor {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  margin-left: 290px;
+  margin-top: 40px;
+  animation: mkt-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 3.6s both;
+}
+
+.mkt-cursor-label {
+  border-radius: 20px;
+  background: var(--mkt-accent);
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+}
+
+/* ------------------------------------------------------ circles / orbits -- */
+
+/* `scale` on .mkt-circles is a paint-time transform — it doesn't shrink the
+   720px layout box, so at reduced scales the wrapper would reserve a tall
+   empty gutter. Sizing the wrapper by the same factor and letting the scaled
+   child overhang it (centred, so it overhangs symmetrically) keeps the
+   reserved space matched to what's actually drawn. */
+.mkt-right {
+  flex: 0 0 auto;
+  display: flex;
+  height: calc(720px * var(--mkt-circles-scale));
+  align-items: center;
+  justify-content: center;
+  animation: mkt-scale-in 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+
+.mkt-circles {
+  position: relative;
+  width: 720px;
+  height: 720px;
+  flex-shrink: 0;
+  transform: scale(var(--mkt-circles-scale));
+}
+
+.mkt-orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.mkt-orbit::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 1px;
+  background: linear-gradient(
+    180deg,
+    rgba(96, 165, 250, 0) 0%,
+    rgba(96, 165, 250, 0.9) 43%,
+    rgba(96, 165, 250, 0) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.mkt-orbit-1 {
+  width: 353px;
+  height: 353px;
+  animation: mkt-spin-left 30s linear infinite;
+}
+
+.mkt-orbit-2 {
+  width: 501px;
+  height: 501px;
+  animation: mkt-spin-right 40s linear infinite;
+}
+
+.mkt-orbit-3 {
+  width: 649px;
+  height: 649px;
+  animation: mkt-spin-right 50s linear infinite;
+}
+
+.mkt-orbit-4 {
+  width: 797px;
+  height: 797px;
+  animation: mkt-spin-left 60s linear infinite;
+}
+
+/* The centring translate has to be repeated inside the keyframes: transform is
+   a single property, so an animation that only rotated would drop it and snap
+   the orbit's origin to its top-left corner. */
+@keyframes mkt-spin-right {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes mkt-spin-left {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+/* Counter-spins against orbit 1 at the same period so the number reads upright
+   while its ring turns underneath it. */
+.mkt-counter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-family: var(--font-urbanist), var(--font-inter), sans-serif;
+  color: var(--color-ink);
+  animation: mkt-spin-upright 30s linear infinite;
+}
+
+@keyframes mkt-spin-upright {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.mkt-counter-value {
+  font-size: 64px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.mkt-counter-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-ink-muted);
+}
+
+/* Placement wrapper: owns the orbital transform chain (rotate out to the
+   radius, then unrotate so the avatar itself stays level). Keeping it separate
+   from the image means the entrance animation can own `transform` freely
+   without fighting the positioning. */
+.mkt-orbit-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+/* These cards used to be <img> avatars, where the photo was the fill. They now
+   hold a technology glyph, so the card needs a surface of its own — a frosted
+   pane, matching the glass used elsewhere on the site. Size, radius, glow and
+   the fly-in animation are all untouched; only the fill and the centring are
+   new. */
+/* Cancels the parent ring's rotation so the card stays level while still
+   travelling the identical path. Periods and directions mirror the .mkt-orbit-*
+   rules exactly: rings 1 and 4 spin left, so their cards spin right, and vice
+   versa. Same technique the centre counter uses. */
+.mkt-orbit-upright {
+  display: block;
+}
+
+.mkt-upright-1 {
+  animation: mkt-spin-upright 30s linear infinite;
+}
+
+.mkt-upright-2 {
+  animation: mkt-spin-upright-rev 40s linear infinite;
+}
+
+.mkt-upright-3 {
+  animation: mkt-spin-upright-rev 50s linear infinite;
+}
+
+.mkt-upright-4 {
+  animation: mkt-spin-upright 60s linear infinite;
+}
+
+@keyframes mkt-spin-upright-rev {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* One squircle for every card. The mix of circles and two different corner
+   radii read as accidental once the contents became a logo set — a single
+   consistent shape is what makes ten different marks scan as one system. */
+.mkt-avatar {
+  --mkt-glow: rgba(59, 130, 246, 0.55);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 30%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  /* A lit pane rather than a flat wash: the gradient gives the surface a
+     direction so it catches light along one edge, and the dark base keeps
+     coloured glyphs legible instead of letting the page show straight through. */
+  background:
+    linear-gradient(
+      155deg,
+      rgba(255, 255, 255, 0.16) 0%,
+      rgba(255, 255, 255, 0.045) 48%,
+      rgba(255, 255, 255, 0.09) 100%
+    ),
+    rgba(13, 20, 38, 0.55);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  /* Tighter than the old 28-30px halo, which bled into neighbouring cards and
+     read as haze. A hairline rim plus a short throw reads as a lit object. */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.26),
+    0 4px 14px rgba(2, 6, 23, 0.55),
+    0 0 18px var(--mkt-glow);
+  opacity: 0;
+  animation: mkt-fly-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 56% of the card, so every glyph lands on the same optical weight regardless
+   of which of the three card sizes it sits in. The drop shadow lifts the mark
+   off the pane so outline logos (PostgreSQL, Python) hold their own against
+   solid ones (Git, TensorFlow). */
+.mkt-avatar > svg {
+  width: 58%;
+  height: 58%;
+  filter: drop-shadow(0 1px 3px rgba(2, 6, 23, 0.6));
+}
+
+/* Hover lifts the rim and glow only — deliberately not a transform. The fly-in
+   animation runs with `both`, so its final transform stays applied and would
+   override any transform set here. */
+.mkt-avatar:hover {
+  border-color: rgba(255, 255, 255, 0.36);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.36),
+    0 6px 18px rgba(2, 6, 23, 0.6),
+    0 0 26px var(--mkt-glow);
+}
+
+.mkt-avatar--md {
+  width: 78px;
+  height: 78px;
+}
+
+.mkt-avatar--lg {
+  width: 88px;
+  height: 88px;
+}
+
+/* Five tones of the site's single accent blue — see the note above .glass-card
+   in globals.css. Each only sets the glow colour; the shadow geometry lives
+   once on .mkt-avatar above. */
+.mkt-avatar--deep {
+  --mkt-glow: rgba(37, 99, 235, 0.6);
+}
+
+.mkt-avatar--mid {
+  --mkt-glow: rgba(59, 130, 246, 0.55);
+}
+
+.mkt-avatar--bright {
+  --mkt-glow: rgba(96, 165, 250, 0.55);
+}
+
+.mkt-avatar--soft {
+  --mkt-glow: rgba(147, 197, 253, 0.45);
+}
+
+.mkt-avatar--pale {
+  --mkt-glow: rgba(191, 219, 254, 0.4);
+}
+
+@keyframes mkt-fly-in {
+  from {
+    opacity: 0;
+    transform: scale(0.3) rotate(-180deg);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: blur(0);
+  }
+}
+
+/* ------------------------------------------------------------- entrances -- */
+
+@keyframes mkt-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mkt-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ------------------------------------------------------------ responsive -- */
+
+@media (max-width: 1280px) {
+  .mkt-hero {
+    --mkt-circles-scale: 0.85;
+  }
+
+  .mkt-body {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .mkt-hero {
+    --mkt-circles-scale: 0.7;
+  }
+
+  .mkt-body {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 24px;
+    padding-bottom: 24px;
+  }
+
+  /* flex: 1 would let the text block absorb all the leftover column height and
+     push the circles to the bottom of the viewport; align-self keeps the copy
+     on the page gutter (lined up with the navbar) while the circles stay
+     centred. */
+  .mkt-left {
+    flex: 0 0 auto;
+    align-self: flex-start;
+    max-width: 600px;
+  }
+
+  .mkt-heading {
+    font-size: 48px;
+    line-height: 52px;
+    letter-spacing: -1px;
+  }
+
+  .mkt-cursor {
+    margin-left: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mkt-hero {
+    --mkt-circles-scale: 0.5;
+  }
+
+  .mkt-heading {
+    font-size: 36px;
+    line-height: 40px;
+    letter-spacing: -0.8px;
+  }
+
+  .mkt-body {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .mkt-cursor {
+    margin-left: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mkt-hero {
+    --mkt-circles-scale: 0.4;
+  }
+
+  .mkt-heading {
+    font-size: 28px;
+    line-height: 32px;
+    letter-spacing: -0.5px;
+  }
+
+  .mkt-social-link {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+
+  .mkt-cursor {
+    margin-left: 60px;
+    margin-top: 28px;
+  }
+}
+
+/* --------------------------------------------------------- availability -- */
+
+.mkt-status-wrap {
+  display: flex;
+  justify-content: center;
+  /* .mkt-body above takes flex: 1, so shrinking this bottom gap lets the body
+     grow into it and the badge settles lower in the hero. */
+  padding: 0 24px 28px;
+  /* Last of the staggered entrances — lands after the cursor badge at 3.6s. */
+  animation: mkt-fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) 3.9s both;
+}
+
+/* Same liquid-glass recipe as the navbar in globals.css: a near-transparent
+   pane doing its work through blur and a specular rim rather than an opaque
+   fill, so the page reads through it. */
+.mkt-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background:
+    linear-gradient(
+      160deg,
+      rgba(255, 255, 255, 0.14) 0%,
+      rgba(255, 255, 255, 0.04) 50%,
+      rgba(255, 255, 255, 0.08) 100%
+    ),
+    rgba(13, 20, 38, 0.32);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+    0 4px 18px rgba(2, 6, 23, 0.45);
+  padding: 11px 22px 11px 18px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-ink);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.mkt-status:hover {
+  border-color: rgba(255, 255, 255, 0.34);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    0 8px 24px rgba(2, 6, 23, 0.55);
+  transform: translateY(-2px);
+}
+
+.mkt-status:focus-visible {
+  outline: 3px solid var(--mkt-accent-soft);
+  outline-offset: 3px;
+}
+
+/* Green reads as "available" independently of the site's blue accent, which is
+   the one place a second hue earns its keep. */
+.mkt-status-dot {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 10px 2px rgba(34, 197, 94, 0.75);
+}
+
+/* The expanding ring is a pseudo-element rather than the dot itself, so the
+   solid core stays put while only the halo pulses outward. */
+.mkt-status-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.6);
+  animation: mkt-status-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes mkt-status-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  80%,
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mkt-status-dot::after {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------- short-viewport fitting -- */
+
+/* The breakpoints above only react to width, but this hero is a fixed-height
+   composition: navbar clearance + a 720px ring + the logo strip. On a wide but
+   short screen (a 1440x900 laptop being the common case) nothing above
+   triggers, the ring stays full size, and the section runs ~116px past the
+   fold — pushing the logo ticker out of view entirely.
+
+   These rules scale the same three variables by available *height*. They are
+   gated to min-width: 1025px, above the point where the layout stacks: below
+   that the columns sit vertically and the page is expected to scroll, so
+   height is no longer the binding constraint. They sit last so that in the
+   1025-1280px overlap they win over the width-driven scale — every value here
+   is smaller, which is the correct direction. */
+@media (min-width: 1025px) and (max-height: 950px) {
+  .mkt-hero {
+    --mkt-circles-scale: 0.82;
+  }
+
+  .mkt-body {
+    padding-top: 128px;
+  }
+}
+
+@media (min-width: 1025px) and (max-height: 840px) {
+  .mkt-hero {
+    --mkt-circles-scale: 0.72;
+  }
+
+  .mkt-body {
+    padding-top: 112px;
+  }
+
+  /* Below this the headline itself becomes the tallest element in the left
+     column, so shrinking only the ring stops being enough. */
+  .mkt-heading {
+    font-size: 48px;
+    line-height: 52px;
+    letter-spacing: -1px;
+  }
+}
+
+@media (min-width: 1025px) and (max-height: 740px) {
+  .mkt-hero {
+    --mkt-circles-scale: 0.62;
+  }
+
+  .mkt-body {
+    padding-top: 100px;
+  }
+
+  .mkt-heading {
+    font-size: 40px;
+    line-height: 44px;
+  }
+
+  .mkt-cta {
+    margin-top: 28px;
+  }
+
+  .mkt-cursor {
+    margin-top: 28px;
+  }
+}

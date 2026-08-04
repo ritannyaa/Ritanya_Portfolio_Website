@@ -1,0 +1,118 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Brain, Code2, Users, Wrench } from "lucide-react";
+import { skillCategories, skillsIntro } from "@/lib/data/skills";
+import { statsContent } from "@/lib/data/site";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { GlassCard } from "@/components/ui/GlassCard";
+import { BentoGrid, BentoItem } from "@/components/ui/BentoGrid";
+import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
+
+const icons = {
+  code: Code2,
+  brain: Brain,
+  wrench: Wrench,
+  users: Users,
+} as const;
+
+function SkillBar({ name, level }: { name: string; level: number }) {
+  return (
+    <div className="group space-y-2">
+      <div className="flex items-center justify-between gap-2 text-sm">
+        <span className="font-medium text-slate-200">{name}</span>
+        <span className="tabular-nums text-slate-400">{level}%</span>
+      </div>
+      <div
+        className="relative h-2 overflow-hidden rounded-full bg-white/8"
+        role="progressbar"
+        aria-valuenow={level}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      >
+        <motion.div
+          className="relative h-full origin-left rounded-full bg-gradient-to-r from-blue-500 to-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.35)] transition-[filter] duration-300 group-hover:brightness-110"
+          style={{ width: `${level}%` }}
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ type: "spring", stiffness: 90, damping: 18, mass: 0.9 }}
+        >
+          {/* One-time light sweep once the bar settles — not a looping shimmer */}
+          <motion.span
+            className="absolute inset-y-0 w-8 bg-gradient-to-r from-transparent via-white/80 to-transparent"
+            initial={{ opacity: 0, left: "-10%" }}
+            whileInView={{ opacity: [0, 1, 0], left: "100%" }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ delay: 0.7, duration: 0.5, ease: "easeOut" }}
+            aria-hidden
+          />
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+export function Skills() {
+  return (
+    <section
+      id="skills-section"
+      data-section
+      className="section-padding"
+      aria-label="Skills"
+    >
+      <div className="section-container">
+        <SectionHeading
+          watermark="Skills"
+          title="My Skills"
+          description={skillsIntro}
+        />
+
+        <BentoGrid stagger className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          {skillCategories.map((cat) => {
+            const Icon = icons[cat.icon];
+            return (
+              <BentoItem key={cat.id} className="col-span-1" depth={0.07}>
+                <div className="h-full">
+                  <GlassCard className="h-full p-6 sm:p-8">
+                    <div className="mb-5 flex items-center gap-3">
+                      <span className="inline-flex rounded-xl bg-blue-500/12 p-2.5 text-[var(--color-accent-soft)]">
+                        <Icon className="h-5 w-5" />
+                      </span>
+                      <h3 className="text-lg font-semibold text-slate-100">
+                        {cat.title}
+                      </h3>
+                    </div>
+                    <div className="space-y-4">
+                      {cat.skills.map((skill) => (
+                        <SkillBar
+                          key={skill.name}
+                          name={skill.name}
+                          level={skill.level}
+                        />
+                      ))}
+                    </div>
+                  </GlassCard>
+                </div>
+              </BentoItem>
+            );
+          })}
+        </BentoGrid>
+
+        <div id="section-counter" className="mt-10 sm:mt-12">
+          <GlassCard className="p-8 sm:p-10" hover={false}>
+            <div className="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-6">
+              {statsContent.map((stat) => (
+                <AnimatedCounter
+                  key={stat.label}
+                  value={stat.value}
+                  label={stat.label}
+                />
+              ))}
+            </div>
+          </GlassCard>
+        </div>
+      </div>
+    </section>
+  );
+}
