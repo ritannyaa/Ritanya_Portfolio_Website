@@ -11,8 +11,9 @@ export type Project = {
   /** Set only where the honest answer is "not finished" — renders as a chip. */
   status?: string;
   image: string;
-  /** Optional: a card with no verified repo renders no repo button at all,
-   *  rather than a link that 404s. */
+  /** Optional. Every card shows a GitHub button either way; without this the
+   *  button falls back to the profile and is labelled as such, rather than
+   *  pointing "View code" at a URL that 404s. */
   github?: string;
   live?: string;
   tech: string[];
@@ -44,18 +45,19 @@ export const projects: Project[] = [
     tech: ["Python", "FastAPI", "PostgreSQL", "Redis", "ChromaDB", "Docker", "LLaMA 3"],
   },
   {
-    id: "savvy",
-    name: "SAVVY",
+    id: "finora",
+    name: "FINORA",
     kicker: "personal finance, built from the bottom up",
     blurb:
       "An attempt at software that reads a bank CSV and tells you something about your spending you didn't already know. The transaction ingestion pipeline works end to end; feature engineering, the models and the mobile app are scaffolded and not yet built.",
     hardPart:
       "Starting at the boring layer on purpose. I've begun projects at the model before and watched them stall the moment real data didn't line up with what I'd assumed, so this one starts at ingestion — one schema every stage above it can rely on, decided before any of those stages exist.",
     status: "Early — ingestion works, the rest is scaffolding",
-    image: "/images/savvy.jpg",
+    image: "/images/finora.jpg",
     // No `github` on purpose: the URL previously here
-    // (Air-Pollution-Early-Warning-System) returns 404. Add the real repo when
-    // it's public and the button comes back automatically.
+    // (Air-Pollution-Early-Warning-System) returns 404, so the card's button
+    // falls back to the profile. Add the real repo here once it's public and
+    // the button becomes a direct "View code" link on its own.
     tech: ["Python", "pandas", "React", "REST APIs"],
   },
   {
@@ -69,9 +71,9 @@ export const projects: Project[] = [
     image: "/images/voltiq.jpg",
     /* No `github` — this pointed at the `VendingMachine` repo, which contains
        exactly one file, `vending_machine.py`. Anyone clicking through would
-       have concluded the card was fabricated, which is worse than no link at
-       all. Add the real URL here when the repo is public and the button comes
-       back on its own. */
+       have concluded the card was fabricated, so the button falls back to the
+       profile instead. Add the real URL here when the repo is public and it
+       becomes a direct "View code" link on its own. */
     tech: ["Python", "FastAPI", "Redis", "XGBoost", "LightGBM", "LSTM", "Android Automotive"],
   },
 ];

@@ -43,10 +43,10 @@ export const navItems = [
    section — the component owns the typewriter, not the words. */
 export const heroContent = {
   /* Line breaks are authored, not wrapped: the typewriter replays them, and
-     the accent treatment is applied to whatever follows the last one. Three
-     domains, in the order the projects appear further down the page. */
+     the accent treatment is applied to whatever follows the last one — here
+     that puts the specialisation in the accent gradient. */
   heading:
-    "Hi, I'm Yahesh M.\nPre-final year B.Tech, AI & Data Science.\nI build backends and ML systems —\nmostly cloud security, battery telemetry, and personal finance.",
+    "Hi!\nI am Yahesh M\na pre-final year B.Tech student, specializing in\nAI and Data Science",
   name: "Yahesh M",
   availability: "Looking for an internship — say hi",
   /* The ring shows the technologies; the number in the middle counts them.

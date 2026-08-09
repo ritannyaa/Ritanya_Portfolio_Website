@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ExternalLink, Github } from "lucide-react";
 import type { Project } from "@/lib/data/projects";
+import { siteConfig } from "@/lib/data/site";
 import { TiltCard } from "@/components/ui/TiltCard";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { easeOutExpo } from "@/lib/motion/easing";
@@ -94,20 +95,21 @@ export function ProjectCard({ project, priority = false }: ProjectCardProps) {
               Live
             </MagneticButton>
           )}
-          {/* No repo, no button. The alternative — a link that 404s — is worse
-              than an absent one, and one of these cards genuinely has no
-              public repo yet. */}
-          {project.github ? (
-            <MagneticButton
-              href={project.github}
-              variant={project.live ? "outline" : "primary"}
-              external
-              className="!px-4 !py-2 text-xs"
-            >
-              <Github className="h-3.5 w-3.5" />
-              Read the code
-            </MagneticButton>
-          ) : (
+          {/* Every card gets a GitHub button, but only a card with a verified
+              repo claims to link to one: without `github` this falls back to
+              the profile and says so, so the label never promises code the
+              link doesn't reach. Adding the repo URL to the data turns it into
+              a "View code" link on its own. */}
+          <MagneticButton
+            href={project.github ?? siteConfig.github}
+            variant={project.live ? "outline" : "primary"}
+            external
+            className="!px-4 !py-2 text-xs"
+          >
+            <Github className="h-3.5 w-3.5" />
+            {project.github ? "View code" : "GitHub profile"}
+          </MagneticButton>
+          {!project.github && (
             <span className="text-xs text-slate-400">Repo not public yet</span>
           )}
         </div>
