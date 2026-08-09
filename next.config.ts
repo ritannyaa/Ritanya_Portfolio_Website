@@ -4,6 +4,8 @@ import type { NextConfig } from "next";
    these directly, but the reason to set them is that this site embeds no
    third-party frames, loads no cross-origin scripts and posts only to EmailJS
    — so the strictest sensible values cost nothing here. */
+const isProd = process.env.NODE_ENV === "production";
+
 const securityHeaders = [
   // Stops the page being framed anywhere — there is no legitimate embed.
   { key: "X-Frame-Options", value: "DENY" },
@@ -17,10 +19,22 @@ const securityHeaders = [
     value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
   },
   // Upgrade any stray http:// subresource rather than blocking it outright.
-  {
-    key: "Content-Security-Policy",
-    value: "upgrade-insecure-requests",
-  },
+  //
+  // Production only. `next dev` serves over plain http://localhost, and this
+  // directive has no localhost carve-out in the CSP spec — WebKit applies it
+  // literally and rewrites every asset request to https://localhost:3000,
+  // which the dev server cannot answer. The result is Safari rendering the
+  // raw HTML with no stylesheet, no bundle and broken images, while Chrome
+  // looks fine because Blink exempts loopback from the upgrade. Nothing is
+  // lost by scoping it: dev has no https:// subresource to upgrade anyway.
+  ...(isProd
+    ? [
+        {
+          key: "Content-Security-Policy",
+          value: "upgrade-insecure-requests",
+        },
+      ]
+    : []),
 ];
 
 const nextConfig: NextConfig = {
