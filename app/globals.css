@@ -595,6 +595,76 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
+  /* The "view more" pill under each card grid. It sits alone on a wide empty
+     row, which is exactly where the plain outline variant read as unfinished:
+     a 1px white border at 15% on a dark page is nearly invisible until you
+     hover it, so the one control ending each section looked like disabled
+     text. This variant keeps the same silhouette but gives it an edge you can
+     actually see — a gradient ring, brighter type, and a dark glass fill with
+     enough contrast against the page to register as a button at rest.
+
+     The ring is two backgrounds rather than a border-colour: the fill is
+     clipped to the padding box and the gradient to the border box, so the 1px
+     edge itself carries the gradient. `border: 1px solid transparent` is what
+     reserves that edge — without it there is no border box to paint into. */
+  .btn-magnetic--more {
+    @apply text-slate-100;
+    border: 1px solid transparent;
+    background:
+      linear-gradient(rgba(15, 23, 42, 0.72), rgba(15, 23, 42, 0.72)) padding-box,
+      linear-gradient(
+          115deg,
+          rgba(59, 130, 246, 0.55),
+          rgba(255, 255, 255, 0.16) 45%,
+          rgba(96, 165, 250, 0.5)
+        )
+        border-box;
+    backdrop-filter: blur(12px);
+    box-shadow:
+      0 6px 22px rgba(2, 6, 23, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  }
+
+  .btn-magnetic--more:hover {
+    background:
+      linear-gradient(rgba(30, 41, 59, 0.78), rgba(30, 41, 59, 0.78)) padding-box,
+      linear-gradient(
+          115deg,
+          var(--color-accent),
+          rgba(255, 255, 255, 0.35) 45%,
+          var(--color-accent-soft)
+        )
+        border-box;
+    box-shadow:
+      0 10px 30px rgba(2, 6, 23, 0.5),
+      0 0 22px rgba(59, 130, 246, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  /* Backgrounds don't transition between gradients, so the hover swap above is
+     instant. This layer is what actually animates: an accent wash held at 0
+     that fades in underneath the label, giving the 250ms ramp the rest of the
+     site's hover states have. Behind the text and non-interactive. */
+  .btn-magnetic--more::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      120% 140% at 50% 120%,
+      rgba(59, 130, 246, 0.3),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .btn-magnetic--more:hover::after {
+    opacity: 1;
+  }
+
   .btn-magnetic--ghost {
     @apply text-slate-200;
   }

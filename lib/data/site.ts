@@ -48,7 +48,7 @@ export const heroContent = {
   heading:
     "Hi!\nI am Yahesh M\na pre-final year B.Tech student, specializing in\nAI and Data Science",
   name: "Yahesh M",
-  availability: "Looking for an internship — say hi",
+  availability: "Looking for an internship or job",
   /* The ring shows the technologies; the number in the middle counts them.
      It used to read "20+ DSA Problems", which had nothing to do with the
      visualisation it sat inside and put a weak number in the largest type on

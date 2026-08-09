@@ -40,8 +40,8 @@ export function Projects() {
             the home page, and /projects is the standalone, linkable version of
             the same set. Slice this grid if a fourth project lands. */}
         <div className="mt-10 flex justify-center" data-reveal>
-          <MagneticButton href="/projects" variant="outline">
-            All {projects.length} projects
+          <MagneticButton href="/projects" variant="more">
+            View more projects
             <ArrowRight className="h-4 w-4" />
           </MagneticButton>
         </div>

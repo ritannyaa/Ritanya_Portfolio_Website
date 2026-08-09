@@ -33,8 +33,8 @@ export function Certificates() {
 
         {certificates.length > SHOWN && (
           <div className="mt-10 flex justify-center" data-reveal>
-            <MagneticButton href="/certificates" variant="outline">
-              All {certificates.length} certificates
+            <MagneticButton href="/certificates" variant="more">
+              View more certificates
               <ArrowRight className="h-4 w-4" />
             </MagneticButton>
           </div>

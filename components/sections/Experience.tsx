@@ -36,8 +36,8 @@ export function Experience() {
             to lead to an identical page. */}
         {experience.length > SHOWN && (
           <div className="mt-10 flex justify-center" data-reveal>
-            <MagneticButton href="/experience" variant="outline">
-              All {experience.length} roles
+            <MagneticButton href="/experience" variant="more">
+              View more roles
               <ArrowRight className="h-4 w-4" />
             </MagneticButton>
           </div>

@@ -11,7 +11,7 @@ type MagneticButtonProps = {
   href?: string;
   onClick?: () => void;
   type?: "button" | "submit";
-  variant?: "primary" | "secondary" | "outline" | "ghost";
+  variant?: "primary" | "secondary" | "outline" | "more" | "ghost";
   className?: string;
   external?: boolean;
   disabled?: boolean;
@@ -21,6 +21,9 @@ const variants = {
   primary: "btn-magnetic btn-magnetic--primary",
   secondary: "btn-magnetic btn-magnetic--secondary",
   outline: "btn-magnetic btn-magnetic--outline",
+  /* The "view more" pill that ends each card grid — see the note in
+     globals.css for why it isn't just the outline variant. */
+  more: "btn-magnetic btn-magnetic--more",
   ghost: "btn-magnetic btn-magnetic--ghost",
 };
 
