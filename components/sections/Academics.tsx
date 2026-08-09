@@ -1,36 +1,33 @@
-import { academicsContent } from "@/lib/data/site";
+import { aboutContent, siteConfig } from "@/lib/data/site";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { BentoGrid, BentoItem } from "@/components/ui/BentoGrid";
-import { Quote, Sparkles, GraduationCap, Building2, CalendarDays } from "lucide-react";
+import { GraduationCap, Building2, CalendarDays, MapPin } from "lucide-react";
 
 export function Academics() {
-  const [lead, ...rest] = academicsContent.paragraphs;
+  const [lead, ...rest] = aboutContent.paragraphs;
 
   return (
     <section
-      id="about-me-extended"
+      id="about-section"
       data-section
       className="section-padding"
-      aria-label="About Me"
+      aria-label="About"
     >
       <div className="section-container">
         <SectionHeading
-          watermark="About Me"
-          title="About Me"
-          description={academicsContent.intro}
+          watermark="background"
+          title="About me"
+          description={aboutContent.intro}
         />
 
         <BentoGrid stagger className="grid-cols-1 lg:grid-cols-6">
           <BentoItem className="lg:col-span-4" depth={0.08}>
             <div className="h-full">
               <GlassCard className="relative h-full overflow-hidden p-6 sm:p-8 lg:p-10">
-                <Quote
-                  className="absolute right-6 top-6 h-16 w-16 text-blue-400/10"
-                  aria-hidden
-                  strokeWidth={1.5}
-                />
-
+                {/* The decorative quote glyph is gone. It framed the opening
+                    paragraph as a pull-quote of himself, which is the sort of
+                    thing a template does and a person doesn't. */}
                 <p className="relative text-lg font-medium leading-relaxed text-slate-100 sm:text-xl">
                   {lead}
                 </p>
@@ -44,19 +41,23 @@ export function Academics() {
                   </p>
                 ))}
 
-                <div className="mt-8 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-[var(--color-accent-soft)]">
-                  <Sparkles className="h-4 w-4" />
-                  Academic Highlights
+                <div className="mt-8 text-sm font-semibold uppercase tracking-wide text-[var(--color-accent-soft)]">
+                  {aboutContent.highlightsTitle}
                 </div>
 
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                  {academicsContent.highlights.map((item, i) => (
+                  {aboutContent.highlights.map(({ label, body }) => (
                     <div
-                      key={i}
-                      className="flex items-start gap-2.5 rounded-xl border border-white/10 bg-white/5 p-3 text-sm leading-snug text-slate-300 [&_strong]:font-semibold [&_strong]:text-white"
+                      key={label}
+                      className="flex items-start gap-2.5 rounded-xl border border-white/10 bg-white/5 p-3 text-sm leading-snug text-slate-300"
                     >
                       <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
-                      <span dangerouslySetInnerHTML={{ __html: item }} />
+                      <span>
+                        <strong className="font-semibold text-white">
+                          {label}:
+                        </strong>{" "}
+                        {body}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -71,10 +72,9 @@ export function Academics() {
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-400">
                     <GraduationCap className="h-5 w-5" />
                   </span>
-                  <div>
-                    <h3 className="text-lg font-semibold">About Me</h3>
-                    <p className="text-xs text-slate-400">Current standing</p>
-                  </div>
+                  {/* Was a second <h3>About Me</h3> inside the About Me
+                      section — a heading repeating its own parent. */}
+                  <h3 className="text-lg font-semibold">Where I am now</h3>
                 </div>
 
                 <ul className="mt-6 space-y-4">
@@ -87,7 +87,7 @@ export function Academics() {
                         Degree
                       </span>
                       <span className="text-sm font-semibold leading-relaxed text-slate-100">
-                        {academicsContent.education.degree}
+                        {aboutContent.education.degree}
                       </span>
                     </span>
                   </li>
@@ -101,30 +101,42 @@ export function Academics() {
                         Institution
                       </span>
                       <span className="text-sm leading-relaxed text-slate-100">
-                        {academicsContent.education.institution}
+                        {aboutContent.education.institution}
                       </span>
                     </span>
                   </li>
 
-                  <li className="flex items-start gap-3">
+                  <li className="flex items-start gap-3 border-b border-white/10 pb-4">
                     <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-blue-300">
                       <CalendarDays className="h-4 w-4" />
                     </span>
                     <span>
                       <span className="block text-xs font-medium uppercase tracking-wide text-slate-400">
-                        Timeline
+                        Year
                       </span>
                       <span className="text-sm leading-relaxed text-slate-100">
-                        {academicsContent.education.year}
+                        {aboutContent.education.year}
+                      </span>
+                    </span>
+                  </li>
+
+                  {/* Added here so the home-town/study-city fact is stated once,
+                      in one place, instead of contradicting itself between the
+                      Contact section and the footer. */}
+                  <li className="flex items-start gap-3">
+                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-blue-300">
+                      <MapPin className="h-4 w-4" />
+                    </span>
+                    <span>
+                      <span className="block text-xs font-medium uppercase tracking-wide text-slate-400">
+                        Based in
+                      </span>
+                      <span className="text-sm leading-relaxed text-slate-100">
+                        {siteConfig.location}
                       </span>
                     </span>
                   </li>
                 </ul>
-
-                <div className="mt-6 flex items-center gap-2 text-xs font-medium text-blue-300">
-                  <Sparkles className="h-4 w-4" />
-                  Building industry-ready skills
-                </div>
               </GlassCard>
             </div>
           </BentoItem>

@@ -1,8 +1,11 @@
+/* A tiny pub/sub carrying Lenis's scroll velocity from SmoothScroll to the
+   cursor, so neither has to know about the other. A `getScrollVelocity()`
+   pull-accessor used to sit here too and nothing ever called it. */
 type Listener = (velocity: { x: number; y: number }) => void;
 
 let vy = 0;
 let vx = 0;
-let listeners = new Set<Listener>();
+const listeners = new Set<Listener>();
 
 export function publishScrollVelocity(x: number, y: number) {
   vx = x;
@@ -12,11 +15,9 @@ export function publishScrollVelocity(x: number, y: number) {
 
 export function subscribeScrollVelocity(fn: Listener) {
   listeners.add(fn);
-  return () => listeners.delete(fn);
-}
-
-export function getScrollVelocity() {
-  return { x: vx, y: vy };
+  return () => {
+    listeners.delete(fn);
+  };
 }
 
 export function decayScrollVelocity(factor = 0.88) {

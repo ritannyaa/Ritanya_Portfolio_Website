@@ -8,22 +8,25 @@ import { BentoGrid, BentoItem } from "@/components/ui/BentoGrid";
 export function Projects() {
   return (
     <section
-      id="blog-section"
+      id="projects-section"
       data-section
       className="section-padding relative overflow-hidden"
       aria-label="Projects"
     >
       <div className="section-container">
         <SectionHeading
-          watermark="Projects"
-          title="Projects"
+          watermark="built"
+          title="Things I've built"
           description={projectsIntro}
         />
 
         <BentoGrid stagger className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, i) => (
             <BentoItem key={project.id} depth={0.06 + (i % 3) * 0.02}>
-              <ProjectCard project={project} />
+              {/* The first card is the earliest image a visitor scrolls to and
+                  is often already in the viewport on tall desktops, so it is
+                  fetched eagerly; the rest stay lazy. */}
+              <ProjectCard project={project} priority={i === 0} />
             </BentoItem>
           ))}
         </BentoGrid>

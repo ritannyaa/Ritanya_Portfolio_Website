@@ -7,6 +7,7 @@ import { Github, Linkedin, Mail, MapPin, Send } from "lucide-react";
 import { siteConfig } from "@/lib/data/site";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { easeOutExpo } from "@/lib/motion/easing";
 
 type ContactRow = {
   label: string;
@@ -20,21 +21,26 @@ const contactRows: ContactRow[] = [
   {
     label: "LinkedIn",
     icon: Linkedin,
-    value: "Yahesh M",
+    value: "in/yahesh-m",
     href: siteConfig.linkedin,
   },
   {
     label: "GitHub",
     icon: Github,
-    value: "Yahesh M",
+    value: "@yaheshmaheshwaran",
     href: siteConfig.github,
   },
   {
-    label: "Location",
+    label: "Based in",
     icon: MapPin,
-    value: "Erode, Tamil Nadu, India (Open to work anywhere)",
+    value: siteConfig.location,
   },
 ];
+
+const fieldClass =
+  "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-slate-100 outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20";
+
+const labelClass = "mb-1.5 block text-sm font-medium text-slate-300";
 
 export function Contact() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
@@ -47,6 +53,9 @@ export function Contact() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // Guard against a second submit while the first is still in flight —
+    // the button is disabled too, but a stray Enter keypress can still fire.
+    if (status === "loading") return;
     setStatus("loading");
     const form = e.currentTarget;
 
@@ -73,18 +82,17 @@ export function Contact() {
     >
       <div className="section-container">
         <SectionHeading
-          watermark="Contact"
-          title="Get In Touch"
-          description="Let's connect! Whether it's internships, collaborations, or sharing ideas in AI & Data Science — feel free to reach out."
+          watermark="hello"
+          title="Say hello"
+          description="Internship leads, a question about anything above, or a reason one of these projects is wrong — all welcome. I read everything that arrives here."
         />
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2" data-reveal-stagger>
           <div className="glass-card flex h-full flex-col p-6 text-white sm:p-8">
             <div className="relative z-10 flex h-full flex-col">
-              <h3 className="text-lg font-semibold">Contact Details</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-300">
-                I&apos;m always open to exploring opportunities, collaborating
-                on projects, or discussing ideas.
+              <h3 className="text-lg font-semibold">Where to find me</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                Email is fastest. LinkedIn works too.
               </p>
 
               <ul className="mt-6 space-y-4">
@@ -142,38 +150,44 @@ export function Contact() {
 
           <div className="glass-card p-6 sm:p-8">
             <h3 className="mb-5 text-lg font-semibold text-slate-100">
-              Send a Message
+              Or send it from here
             </h3>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="user_name" className="mb-1.5 block text-sm font-medium text-slate-300">
-                  Your Name
+                <label htmlFor="user_name" className={labelClass}>
+                  Name
                 </label>
+                {/* Placeholders describe what to put in the field rather than
+                    restating the label. "Enter your name" under a label that
+                    already says Name is placeholder text about placeholder
+                    text. */}
                 <input
                   id="user_name"
                   name="user_name"
                   type="text"
                   required
-                  placeholder="Enter your name"
-                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20"
+                  autoComplete="name"
+                  placeholder="Who's writing"
+                  className={fieldClass}
                 />
               </div>
               <div>
-                <label htmlFor="user_email" className="mb-1.5 block text-sm font-medium text-slate-300">
-                  Your Email
+                <label htmlFor="user_email" className={labelClass}>
+                  Email
                 </label>
                 <input
                   id="user_email"
                   name="user_email"
                   type="email"
                   required
-                  placeholder="Enter your email"
-                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20"
+                  autoComplete="email"
+                  placeholder="Where I should reply"
+                  className={fieldClass}
                 />
               </div>
               <div>
-                <label htmlFor="subject" className="mb-1.5 block text-sm font-medium text-slate-300">
+                <label htmlFor="subject" className={labelClass}>
                   Subject
                 </label>
                 <input
@@ -181,12 +195,12 @@ export function Contact() {
                   name="subject"
                   type="text"
                   required
-                  placeholder="Enter subject"
-                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20"
+                  placeholder="What it's about"
+                  className={fieldClass}
                 />
               </div>
               <div>
-                <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-slate-300">
+                <label htmlFor="message" className={labelClass}>
                   Message
                 </label>
                 <textarea
@@ -194,8 +208,8 @@ export function Contact() {
                   name="message"
                   rows={5}
                   required
-                  placeholder="Write your message"
-                  className="w-full resize-y rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20"
+                  placeholder="As much or as little detail as you like."
+                  className={`${fieldClass} resize-y`}
                 />
               </div>
 
@@ -205,39 +219,62 @@ export function Contact() {
                 type="submit"
                 variant="primary"
                 className="w-full"
+                disabled={status === "loading"}
               >
                 <Send className="h-4 w-4" />
-                {status === "loading" ? "Sending..." : "Send Mail"}
+                {status === "loading" ? "Sending…" : "Send message"}
               </MagneticButton>
 
-              <AnimatePresence mode="wait">
-                {status === "success" && (
-                  <motion.p
-                    key="success"
-                    initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-center text-sm text-emerald-600"
-                    role="status"
-                  >
-                    Message sent successfully!
-                  </motion.p>
-                )}
-                {status === "error" && (
-                  <motion.p
-                    key="error"
-                    initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-center text-sm text-red-600"
-                    role="alert"
-                  >
-                    Failed to send message. Please try again.
-                  </motion.p>
-                )}
-              </AnimatePresence>
+              {/* The live region is mounted from first render and stays
+                  mounted — only its contents change. role="status" applied to
+                  a node that is itself inserted on submit is unreliable:
+                  several screen reader and browser pairs only announce
+                  mutations within a region that already existed, so the
+                  result of the submission was silently lost. */}
+              <div
+                aria-live="polite"
+                aria-atomic="true"
+                className="min-h-[1.25rem]"
+              >
+                <AnimatePresence mode="wait">
+                  {status === "success" && (
+                    <motion.p
+                      key="success"
+                      initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.35, ease: easeOutExpo }}
+                      // Was emerald-600 / red-600 — both are dark enough on
+                      // this near-black card to sit under the contrast floor.
+                      className="text-center text-sm text-emerald-400"
+                    >
+                      That&apos;s with me. I&apos;ll reply as soon as I see it.
+                    </motion.p>
+                  )}
+                  {status === "error" && (
+                    <motion.p
+                      key="error"
+                      initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.35, ease: easeOutExpo }}
+                      className="text-center text-sm text-red-400"
+                    >
+                      That didn&apos;t go through. Try again, or mail me
+                      directly at{" "}
+                      {/* An error state that only says "failed" leaves the
+                          visitor with nothing. This hands them the fallback. */}
+                      <a
+                        href={`mailto:${siteConfig.email}`}
+                        className="underline underline-offset-2 hover:text-red-300"
+                      >
+                        {siteConfig.email}
+                      </a>
+                      .
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </div>
             </form>
           </div>
         </div>

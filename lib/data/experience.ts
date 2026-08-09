@@ -5,47 +5,54 @@ export type ExperienceItem = {
   duration: string;
   type: string;
   description: string;
+  /** One line after the description — the thing that actually stuck. */
+  takeaway?: string;
   highlights?: string[];
   /** Path under /public, e.g. "/certificates/my-internship.jpg" */
   certificateImage?: string;
-  /** External link to view/verify the certificate */
+  /** External verify link. Leave unset if there isn't one — the card drops
+   *  the button rather than linking somewhere that isn't a certificate. */
   certificateLink?: string;
 };
 
 export const experienceIntro =
-  "Internships, training programs, and hands-on work that shaped my practical skills — each backed by a certificate.";
+  "Two internships so far — one building product at a startup, one inside enterprise network infrastructure. Different worlds, and I'd have guessed wrong about which one I'd find interesting.";
 
 export const experience: ExperienceItem[] = [
   {
-    id: "placeholder-experience",
+    id: "idivpl-full-stack",
     role: "Full Stack Developer",
-    organization: "IDIVPL-Startup",
-    duration: "26.12.2025 – 24.01.2026",
+    organization: "IDIVPL",
+    duration: "Dec 2025 – Jan 2026",
     type: "Internship",
     description:
-      "Worked in a startup environment to develop and enhance full-stack web applications by building responsive user interfaces, integrating REST APIs, managing databases, and collaborating in Agile workflows. Gained hands-on experience with the complete software development lifecycle, including development, testing, debugging, version control, and deployment while delivering features for real-world business applications.",
+      "A month at a small startup, working on the part of the codebase customers actually touch. I built responsive interfaces, wired them to REST APIs, worked against the database, and shipped inside their Agile cycle — development through testing, debugging, version control and deploy.",
+    takeaway:
+      "The lesson wasn't technical. It was that a feature isn't finished when it works on my machine.",
     highlights: [
-      "Debugged and resolved frontend and backend issues",
-      "Learned industry-standard software development practices in a startup environment",
-      "Documented APIs and technical implementation details.",
+      "Fixed bugs on both sides of the API — which is mostly how I learned to read code I didn't write",
+      "Worked to their branching, review and deploy conventions instead of my own",
+      "Wrote the API and implementation docs",
     ],
-    certificateImage: "/certificates/placeholder-experience1.jpg",
-    certificateLink: "https://example.com/replace-with-certificate-link",
+    certificateImage: "/certificates/idivpl-full-stack.jpg",
+    // No external link yet — the card falls back to opening the certificate
+    // image, which is honest. It used to link to example.com.
   },
   {
-    id: "placeholder-experience-2",
+    id: "cognizant-networking",
     role: "Networking",
     organization: "Cognizant",
-    duration: "09.06.2026 – 23.06.2026",
+    duration: "Jun 2026",
     type: "Internship",
     description:
-        "Worked with the Network Infrastructure team to gain hands-on exposure to enterprise networking operations. Assisted in monitoring network performance, troubleshooting connectivity issues, configuring VLANs and routing in lab environments, and understanding firewall, VPN, and cloud networking concepts. Gained experience with network monitoring tools, ITIL-based incident management, and enterprise infrastructure best practices while collaborating with experienced network engineers.",
+      "Two weeks with the Network Infrastructure team — the layer everything else quietly depends on. I monitored network performance, worked connectivity issues, and configured VLANs and routing in a lab environment, while getting a look at how firewalls, VPNs and cloud networking fit together at enterprise scale.",
+    takeaway:
+      "The part I didn't expect to care about was ITIL incident management. How an org routes and closes an incident is its own kind of system design.",
     highlights: [
-      "Explored Azure and AWS networking fundamentals for hybrid infrastructure",
-      "Monitored enterprise network performance and system availability",
-      "Configured VLANs, IP addressing, and basic routing protocols",
+      "Configured VLANs, IP addressing and basic routing protocols in a lab",
+      "Monitored performance and availability with the team's tooling",
+      "Built a working picture of hybrid networking across Azure and AWS",
     ],
-    certificateImage: "/certificates/placeholder-experience2.jpg",
-    certificateLink: "https://example.com/replace-with-certificate-link",
+    certificateImage: "/certificates/cognizant-networking.jpg",
   },
 ];

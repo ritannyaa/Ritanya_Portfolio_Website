@@ -2,7 +2,12 @@
 
 import { motion } from "framer-motion";
 import { Brain, Code2, Users, Wrench } from "lucide-react";
-import { skillCategories, skillsIntro } from "@/lib/data/skills";
+import {
+  levels,
+  skillCategories,
+  skillsIntro,
+  type Level,
+} from "@/lib/data/skills";
 import { statsContent } from "@/lib/data/site";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -16,23 +21,24 @@ const icons = {
   users: Users,
 } as const;
 
-function SkillBar({ name, level }: { name: string; level: number }) {
+function SkillBar({ name, level }: { name: string; level: Level }) {
+  const { label, value } = levels[level];
+
   return (
     <div className="group space-y-2">
       <div className="flex items-center justify-between gap-2 text-sm">
         <span className="font-medium text-slate-200">{name}</span>
-        <span className="tabular-nums text-slate-400">{level}%</span>
+        {/* The word, not a percentage — see the note in lib/data/skills.ts. */}
+        <span className="text-xs text-slate-400">{label}</span>
       </div>
       <div
         className="relative h-2 overflow-hidden rounded-full bg-white/8"
-        role="progressbar"
-        aria-valuenow={level}
-        aria-valuemin={0}
-        aria-valuemax={100}
+        role="img"
+        aria-label={`${name}: ${label}`}
       >
         <motion.div
           className="relative h-full origin-left rounded-full bg-gradient-to-r from-blue-500 to-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.35)] transition-[filter] duration-300 group-hover:brightness-110"
-          style={{ width: `${level}%` }}
+          style={{ width: `${value}%` }}
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true, margin: "-40px" }}
@@ -63,8 +69,8 @@ export function Skills() {
     >
       <div className="section-container">
         <SectionHeading
-          watermark="Skills"
-          title="My Skills"
+          watermark="stack"
+          title="What I work with"
           description={skillsIntro}
         />
 
@@ -75,7 +81,7 @@ export function Skills() {
               <BentoItem key={cat.id} className="col-span-1" depth={0.07}>
                 <div className="h-full">
                   <GlassCard className="h-full p-6 sm:p-8">
-                    <div className="mb-5 flex items-center gap-3">
+                    <div className="mb-1 flex items-center gap-3">
                       <span className="inline-flex rounded-xl bg-blue-500/12 p-2.5 text-[var(--color-accent-soft)]">
                         <Icon className="h-5 w-5" />
                       </span>
@@ -83,15 +89,38 @@ export function Skills() {
                         {cat.title}
                       </h3>
                     </div>
-                    <div className="space-y-4">
-                      {cat.skills.map((skill) => (
-                        <SkillBar
-                          key={skill.name}
-                          name={skill.name}
-                          level={skill.level}
-                        />
-                      ))}
-                    </div>
+                    <p className="mb-5 text-xs leading-relaxed text-slate-400">
+                      {cat.note}
+                    </p>
+
+                    {cat.skills && (
+                      <div className="space-y-4">
+                        {cat.skills.map((skill) => (
+                          <SkillBar
+                            key={skill.name}
+                            name={skill.name}
+                            level={skill.level}
+                          />
+                        ))}
+                      </div>
+                    )}
+
+                    {/* A category the meter can't describe honestly renders as
+                        prose instead — which also breaks the four-identical-
+                        cards rhythm the grid had before. */}
+                    {cat.points && (
+                      <ul className="space-y-3">
+                        {cat.points.map((point) => (
+                          <li
+                            key={point}
+                            className="flex items-start gap-2.5 text-sm leading-snug text-slate-400"
+                          >
+                            <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-blue-500" />
+                            {point}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </GlassCard>
                 </div>
               </BentoItem>
@@ -107,6 +136,7 @@ export function Skills() {
                   key={stat.label}
                   value={stat.value}
                   label={stat.label}
+                  exact={stat.exact}
                 />
               ))}
             </div>

@@ -65,26 +65,6 @@ export function getModeTargets(mode: CursorMode): CursorTargets {
   return MODE_TARGETS[mode];
 }
 
-/** Not exported — cursor-motion.ts has its own (differently-shaped, dt+rate
- * based) lerp; PremiumCursor.tsx used to import this 3-arg one by mistake
- * and call it with 4 args everywhere, silently dropping the rate argument.
- * Keeping this one module-private avoids that ambiguity happening again. */
-function lerp(current: number, target: number, factor: number): number {
-  return current + (target - current) * factor;
-}
-
-export function springStep(
-  current: number,
-  target: number,
-  velocity: number,
-  stiffness = 0.12,
-  damping = 0.78
-): { value: number; velocity: number } {
-  const force = (target - current) * stiffness;
-  const v = velocity * damping + force;
-  return { value: current + v, velocity: v };
-}
-
 export type Vec2 = { x: number; y: number };
 
 export function detectCursorMode(el: Element | null): CursorMode {
@@ -177,16 +157,7 @@ export function applyLayerTransform(
   extra = ""
 ) {
   if (!el) return;
+  // translate3d, not translate — it keeps the layer on the compositor so
+  // per-frame cursor movement never touches layout or paint.
   el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) ${extra}`;
-}
-
-export function smoothVelocity(
-  current: Vec2,
-  target: Vec2,
-  factor = 0.18
-): Vec2 {
-  return {
-    x: lerp(current.x, target.x, factor),
-    y: lerp(current.y, target.y, factor),
-  };
 }

@@ -18,17 +18,17 @@ import {
   SiTensorflow,
 } from "react-icons/si";
 import "./Hero.css";
-import { siteConfig } from "@/lib/data/site";
+import { heroContent, siteConfig } from "@/lib/data/site";
 import { useReducedMotion } from "@/lib/hooks/useReducedMotion";
 
-const HEADING =
-  " Hi   !\nI am Yahesh M\na pre-final year B.Tech student, specializing in\nAI and Data Science.";
-const HEADING_NAME = "Yahesh M";
+// Copy lives in lib/data/site.ts with every other string on the site — this
+// file owns the typewriter, not the words. (It used to hardcode both, against
+// the convention the README states.)
+const HEADING = heroContent.heading;
+const HEADING_NAME = heroContent.name;
 // Keep the final line in the accent treatment while preserving each authored
 // line break in the typewriter heading.
 const HEADING_SPLIT = HEADING.lastIndexOf("\n") + 1;
-
-const AVAILABILITY = "I'm open for job & internship opportunities";
 
 type Technology = {
   name: string;
@@ -104,11 +104,16 @@ function useCountUp(target: number, duration = 2000, delay = 1200) {
   return value;
 }
 
+/* 12ms/char with a 150ms lead-in, down from 35ms/400ms. Two reasons beyond
+   taste: this <h1> is the page's LCP element and it paints one character at a
+   time, so LCP cannot resolve until the last one lands — at the original rate
+   that was ~5.6s, far outside the 2.5s budget. ~2.0s clears it comfortably
+   while still reading unmistakably as typing. */
 function TypewriterHeading({
   text,
   split,
-  speed = 35,
-  delay = 400,
+  speed = 12,
+  delay = 150,
 }: {
   text: string;
   split: number;
@@ -152,24 +157,80 @@ function TypewriterHeading({
 
   return (
     <h1 className="mkt-heading">
-      <span>{typed.slice(0, nameStart)}</span>
-      <span className="mkt-heading-accent mkt-heading-name">{typed.slice(nameStart, nameEnd)}</span>
-      <span>{typed.slice(nameEnd, split)}</span>
-      <span className="mkt-heading-accent">{typed.slice(split)}</span>
-      {typing && <span className="mkt-caret" aria-hidden="true" />}
-      {/* The visible text is built up a character at a time, which reads as
-          gibberish to a screen reader; the full sentence is exposed once here
-          instead. */}
-      <span className="sr-only">{text}</span>
+      {/* Full text at opacity 0. It does two jobs: it reserves the heading's
+          final four-line box so the flex row stops re-centring as characters
+          land (the column used to grow ~190px over the whole animation,
+          sliding the headline upward the entire time), and because it is
+          transparent rather than hidden it stays in the accessibility tree —
+          so the heading reads as one sentence instead of the gibberish a
+          screen reader would get from partial text. */}
+      <span className="mkt-heading-ghost">{text}</span>
+      <span className="mkt-heading-typed" aria-hidden="true">
+        <span>{typed.slice(0, nameStart)}</span>
+        <span className="mkt-heading-accent mkt-heading-name">
+          {typed.slice(nameStart, nameEnd)}
+        </span>
+        <span>{typed.slice(nameEnd, split)}</span>
+        <span className="mkt-heading-accent">{typed.slice(split)}</span>
+        {typing && <span className="mkt-caret" />}
+      </span>
     </h1>
   );
 }
 
+/**
+ * Pauses the hero's looping animations while it is off screen.
+ *
+ * There are sixteen of them — four rings, ten counter-rotating cards, the
+ * centre counter, the name shimmer — and CSS keyframes do not stop when
+ * their element leaves the viewport. On a page this long that is continuous
+ * compositor work for the whole session in exchange for nothing anyone can
+ * see. The observer toggles one class; the animations themselves are
+ * untouched, so nothing about the motion changes when it is visible.
+ */
+function usePauseOffscreen<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => el.classList.toggle("mkt-hero--paused", !entry.isIntersecting),
+      { rootMargin: "120px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return ref;
+}
+
 export function Hero() {
-  const dsaProblems = useCountUp(20);
+  // Counts the ring it sits inside, so the visualisation reads as one idea.
+  // It previously counted DSA problems — a number with no relationship to the
+  // technologies orbiting it, in the biggest type on the page.
+  const toolCount = useCountUp(orbitTechnologies.length);
+  const heroRef = usePauseOffscreen<HTMLElement>();
 
   return (
-    <section id="home-section" className="mkt-hero" aria-label="Home">
+    <section
+      ref={heroRef}
+      id="home-section"
+      className="mkt-hero"
+      aria-label="Home"
+    >
+      {/* The headline is a transparent ghost plus a JS-driven typed layer, so
+          with scripting off it would render as an empty <h1>. This swaps them:
+          the ghost becomes the visible heading and the empty typed layer is
+          removed. Applies only when scripting is disabled, so there is no
+          flash for everyone else. */}
+      <noscript
+        dangerouslySetInnerHTML={{
+          __html:
+            "<style>.mkt-heading-ghost{opacity:1}.mkt-heading-typed{display:none}</style>",
+        }}
+      />
       <div className="mkt-body">
         <div className="mkt-left">
           <TypewriterHeading text={HEADING} split={HEADING_SPLIT} />
@@ -219,8 +280,10 @@ export function Hero() {
               <div key={n} className={`mkt-orbit mkt-orbit-${n}`}>
                 {n === 1 && (
                   <div className="mkt-counter">
-                    <span className="mkt-counter-value">{dsaProblems}+</span>
-                    <span className="mkt-counter-label">DSA Problems</span>
+                    <span className="mkt-counter-value">{toolCount}</span>
+                    <span className="mkt-counter-label">
+                      {heroContent.counterLabel}
+                    </span>
                   </div>
                 )}
 
@@ -278,7 +341,7 @@ export function Hero() {
       <div className="mkt-status-wrap">
         <a className="mkt-status" href="#contact-section">
           <span className="mkt-status-dot" aria-hidden="true" />
-          <span>{AVAILABILITY}</span>
+          <span>{heroContent.availability}</span>
         </a>
       </div>
     </section>

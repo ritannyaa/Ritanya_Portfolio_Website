@@ -6,9 +6,11 @@ import { ExperienceCard } from "@/components/ui/ExperienceCard";
 import { experience, experienceIntro } from "@/lib/data/experience";
 
 export const metadata: Metadata = {
-  title: "Experience — Yahesh M",
+  // The "— Yahesh M" suffix comes from the title template in app/layout.tsx.
+  title: "Experience",
   description:
-    "Internships, training, and hands-on experience with certificates.",
+    "Two internships: full-stack development at a startup, and enterprise network infrastructure at Cognizant.",
+  alternates: { canonical: "/experience" },
 };
 
 export default function ExperiencePage() {
@@ -22,8 +24,8 @@ export default function ExperiencePage() {
       >
         <div className="section-container">
           <SectionHeading
-            watermark="Experience"
-            title="Internships & Hands-on Experience"
+            watermark="worked"
+            title="Where I've worked"
             description={experienceIntro}
           />
 

@@ -35,24 +35,15 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       publishScrollVelocity(0, instance.velocity);
       ScrollTrigger.update();
 
-      // expose lightweight CSS vars for cheap, GPU-driven visual reactions
-      try {
-        const doc = document.documentElement;
-        const total = Math.max(
-          1,
-          document.documentElement.scrollHeight - window.innerHeight
-        );
-        const prog = Math.max(0, Math.min(1, instance.scroll / total));
-        doc.style.setProperty("--scroll-progress", prog.toFixed(4));
-        const vel = Math.abs(instance.velocity || 0);
-        // small smoothing for visual stability
-        const velClamped = Math.min(3, vel);
-        doc.style.setProperty("--scroll-vel", String(velClamped.toFixed(3)));
-        const angle = (prog * 360) % 360;
-        doc.style.setProperty("--glow-angle", `${angle}deg`);
-      } catch (e) {
-        // defensive: ignore in non-browser environments
-      }
+      // One CSS var, written per scroll event, driving the nav progress bar's
+      // scaleX. --scroll-vel and --glow-angle were written alongside it and
+      // no stylesheet ever read either: --glow-angle is set per-card by
+      // TiltCard from the pointer position, and --scroll-vel had no consumer
+      // at all. Two of three per-event style writes were doing nothing.
+      const doc = document.documentElement;
+      const total = Math.max(1, doc.scrollHeight - window.innerHeight);
+      const progress = Math.min(1, Math.max(0, instance.scroll / total));
+      doc.style.setProperty("--scroll-progress", progress.toFixed(4));
     });
 
     // Use a single requestAnimationFrame loop instead of gsap.ticker
@@ -96,16 +87,34 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
-      const target = (e.target as HTMLElement).closest(
-        'a[href^="#"]'
-      ) as HTMLAnchorElement | null;
-      if (!target?.hash) return;
-      const el = document.querySelector(target.hash);
+      // Modified clicks and anything but the primary button belong to the
+      // browser (open in new tab, etc.) — never swallow those.
+      if (e.defaultPrevented || e.button !== 0) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+      // Matches both `#id` and `/#id`. The selector used to be a[href^="#"],
+      // which every nav link missed — they are authored as "/#about-section"
+      // so they can also be followed from /experience and /certificates.
+      // Those clicks fell through to a Next.js route push plus a native jump,
+      // so the same gesture scrolled two different ways depending on which
+      // link you used.
+      const anchor = (e.target as HTMLElement).closest("a");
+      if (!anchor) return;
+
+      const url = new URL(anchor.href, window.location.href);
+      if (url.origin !== window.location.origin) return;
+      if (url.pathname !== window.location.pathname) return;
+      if (!url.hash || url.hash === "#") return;
+
+      // CSS.escape guards ids that would otherwise be an invalid selector.
+      const el = document.getElementById(decodeURIComponent(url.hash.slice(1)));
       if (!el) return;
+
       e.preventDefault();
+
       if (lenisRef.current && !reduced) {
-        // quick, snappy anchor navigation that never feels sluggish
-        lenisRef.current.scrollTo(target.hash, {
+        lenisRef.current.scrollTo(el, {
+          // Clears the fixed dock, which nothing in normal flow accounts for.
           offset: -88,
           duration: 0.48,
           easing: (t) => 1 - Math.pow(1 - t, 3),
@@ -113,7 +122,17 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       } else {
         el.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
       }
+
+      // Keep the address bar honest without letting the browser also jump.
+      window.history.replaceState(null, "", url.hash);
+
+      // Anchor navigation must move focus, not just the viewport — otherwise
+      // a keyboard user's next Tab continues from the link they just left
+      // rather than from the section they asked for (WCAG 2.4.3).
+      if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1");
+      el.focus({ preventScroll: true });
     };
+
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
   }, [reduced]);

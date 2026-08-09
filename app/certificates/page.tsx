@@ -6,8 +6,10 @@ import { CertificateCard } from "@/components/ui/CertificateCard";
 import { certificates, certificatesIntro } from "@/lib/data/certificates";
 
 export const metadata: Metadata = {
-  title: "Certificates — Yahesh M",
-  description: "Courses, workshops, and credentials with view/verify links.",
+  title: "Certificates",
+  description:
+    "Course certificates from IBM, HackerRank, Simplilearn and Great Learning — most with a verify link.",
+  alternates: { canonical: "/certificates" },
 };
 
 export default function CertificatesPage() {
@@ -21,8 +23,8 @@ export default function CertificatesPage() {
       >
         <div className="section-container">
           <SectionHeading
-            watermark="Certificates"
-            title="Courses & Credentials"
+            watermark="learned"
+            title="Courses & credentials"
             description={certificatesIntro}
           />
 

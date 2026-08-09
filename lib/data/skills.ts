@@ -1,39 +1,75 @@
-export const skillsIntro =
-  "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia";
+/* Three honest tiers instead of a percentage. A bar labelled "49%" claims a
+   precision nobody has about their own ability, and everyone reading a
+   portfolio knows that number was typed rather than measured. The bar and its
+   animation are unchanged — only what drives its width, and what's printed
+   next to it. */
+export const levels = {
+  daily: { label: "Daily", value: 100 },
+  comfortable: { label: "Comfortable", value: 68 },
+  learning: { label: "Learning", value: 38 },
+} as const;
 
-export const skillCategories = [
+export type Level = keyof typeof levels;
+
+export type SkillCategory = {
+  id: string;
+  title: string;
+  /** One line under the title — stops four identical cards reading as a loop. */
+  note: string;
+  icon: "code" | "brain" | "wrench" | "users";
+  skills?: { name: string; level: Level }[];
+  /** Alternative body for a category a meter can't honestly describe. */
+  points?: string[];
+};
+
+export const skillsIntro =
+  "Grouped by how much real use each one has had, rather than by a number I'd have made up.";
+
+export const skillCategories: SkillCategory[] = [
   {
-    id: "programming",
-    title: "Programming & Data",
-    icon: "code" as const,
+    id: "languages",
+    title: "Languages & data",
+    note: "What I'm quickest in.",
+    icon: "code",
     skills: [
-      { name: "Python (Pandas, NumPy, Matplotlib, etc)", level: 95 },
-      { name: "SQL", level: 70 },
-      { name: "Data Science (API Integration, Scraping)", level: 80 },
+      { name: "Python", level: "daily" },
+      { name: "pandas / NumPy", level: "daily" },
+      { name: "SQL & PostgreSQL", level: "comfortable" },
+      { name: "Data collection (APIs, scraping)", level: "comfortable" },
     ],
   },
   {
     id: "ml",
-    title: "Machine Learning",
-    icon: "brain" as const,
+    title: "Machine learning",
+    note: "Enough to build with. Still very much reading.",
+    icon: "brain",
     skills: [
-      { name: "Machine Learning (ML)", level: 49 },
-      { name: "Scikit-learn", level: 60 },
+      { name: "scikit-learn", level: "comfortable" },
+      { name: "XGBoost / LightGBM", level: "learning" },
+      { name: "PyTorch / TensorFlow", level: "learning" },
     ],
   },
   {
-    id: "tools",
-    title: "Tools & Workflow",
-    icon: "wrench" as const,
-    skills: [{ name: "Git & GitHub, etc.", level: 80 }],
+    id: "backend",
+    title: "Backend & infra",
+    note: "Picked up because a project needed it, not from a syllabus.",
+    icon: "wrench",
+    skills: [
+      { name: "FastAPI", level: "comfortable" },
+      { name: "Redis & caching", level: "learning" },
+      { name: "Docker", level: "learning" },
+    ],
   },
   {
-    id: "soft",
-    title: "Professional Skills",
-    icon: "users" as const,
-    skills: [
-      { name: "Problem-solving", level: 83 },
-      { name: "Communication & Project Management", level: 85 },
+    id: "how-i-work",
+    title: "How I work",
+    note: "The parts a meter can't hold.",
+    icon: "users",
+    points: [
+      "Start at the data, finish at the model — not the other way round.",
+      "Git and GitHub daily, including the branching I still get wrong.",
+      "I read more code than I write, and most of it isn't mine.",
+      "Comfortable presenting work and running a small project end to end.",
     ],
   },
 ];

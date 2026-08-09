@@ -14,6 +14,7 @@ type MagneticButtonProps = {
   variant?: "primary" | "secondary" | "outline" | "ghost";
   className?: string;
   external?: boolean;
+  disabled?: boolean;
 };
 
 const variants = {
@@ -31,6 +32,7 @@ export function MagneticButton({
   variant = "primary",
   className,
   external,
+  disabled = false,
 }: MagneticButtonProps) {
   const ref = useRef<HTMLAnchorElement & HTMLButtonElement>(null);
   const reduced = useReducedMotion();
@@ -44,7 +46,9 @@ export function MagneticButton({
 
   const handleMove = useCallback(
     (e: React.MouseEvent) => {
-      if (reduced || !ref.current) return;
+      // A disabled button that still leans toward the cursor reads as
+      // interactive when it isn't.
+      if (reduced || disabled || !ref.current) return;
       latestPoint.current = { x: e.clientX, y: e.clientY };
       if (rafPending.current) return;
       rafPending.current = true;
@@ -59,7 +63,7 @@ export function MagneticButton({
         ref.current.style.transform = `translate(${x * 0.18}px, ${y * 0.18}px)`;
       });
     },
-    [reduced]
+    [reduced, disabled]
   );
 
   const handleLeave = useCallback(() => {
@@ -71,18 +75,20 @@ export function MagneticButton({
   const baseClass = cn(
     "btn-magnetic-base relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full px-6 py-3 text-sm font-medium [&_svg]:transition-transform [&_svg]:duration-300 group-hover:[&_svg]:translate-x-0.5",
     variants[variant],
+    disabled && "pointer-events-none opacity-60",
     className
   );
 
-  const motionProps = reduced
-    ? {}
-    : {
-        whileHover: { scale: 1.03 },
-        whileTap: { scale: 0.94 },
-        transition: { duration: 0.25, ease: easeOutExpo },
-      };
+  const motionProps =
+    reduced || disabled
+      ? {}
+      : {
+          whileHover: { scale: 1.03 },
+          whileTap: { scale: 0.94 },
+          transition: { duration: 0.25, ease: easeOutExpo },
+        };
 
-  const shine = !reduced && (
+  const shine = !reduced && !disabled && (
     <span
       className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
       aria-hidden
@@ -119,6 +125,7 @@ export function MagneticButton({
       ref={ref as React.Ref<HTMLButtonElement>}
       type={type}
       onClick={onClick}
+      disabled={disabled}
       data-cursor="button"
       data-magnetic
       data-magnetic-strength="0.32"

@@ -65,7 +65,9 @@ export function Footer() {
           </div>
 
           <div>
-            <h2 className="mb-3 text-lg font-semibold text-slate-100">Roles</h2>
+            <h2 className="mb-3 text-lg font-semibold text-slate-100">
+              {footerContent.rolesTitle}
+            </h2>
             <ul className="space-y-2 text-sm text-slate-400">
               {footerContent.roles.map((role) => (
                 <li key={role}>{role}</li>
@@ -74,13 +76,20 @@ export function Footer() {
           </div>
 
           <div>
+            {/* Was "Have a Questions?" — a grammatical error sitting in a
+                heading, which is the kind of thing a reader notices and
+                silently downgrades you for. */}
             <h2 className="mb-3 text-lg font-semibold text-slate-100">
-              Have a Questions?
+              {footerContent.contactTitle}
             </h2>
             <ul className="space-y-3 text-sm text-slate-400">
               <li className="flex gap-2">
+                {/* Short form here on purpose — the full "studying in
+                    Coimbatore" phrasing already appears in About and in
+                    Contact, and a third verbatim repeat reads as one variable
+                    wired into three slots. */}
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
-                <span>{siteConfig.locationShort}</span>
+                <span>{siteConfig.home}</span>
               </li>
               <li className="flex gap-2">
                 <Phone className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
@@ -104,11 +113,23 @@ export function Footer() {
           </div>
         </div>
 
+        {/* A colophon rather than "Thank You for visiting site". The source
+            link is the point: anyone who wants to know how this was built can
+            go read it. */}
         <p
           data-reveal
           className="mt-12 border-t border-white/8 pt-8 text-center text-sm text-slate-400"
         >
-          {footerContent.credit}
+          © {new Date().getFullYear()} {siteConfig.name} · Built with Next.js
+          and too many small revisions ·{" "}
+          <a
+            href={siteConfig.repo}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-4 transition-colors duration-200 hover:text-[var(--color-accent-soft)]"
+          >
+            source
+          </a>
         </p>
       </div>
     </footer>

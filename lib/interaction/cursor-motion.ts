@@ -77,13 +77,14 @@ export class VelocityTracker {
   }
 }
 
-/** Layer spring presets — higher stiffness = tighter follow */
+/* Layer spring presets — higher stiffness = tighter follow. One entry per
+   layer the cursor actually renders; `trail` and `halo` presets used to sit
+   between these from a seven-layer version of the cursor that no longer
+   exists. */
 export const SPRING_LAYERS = {
   core: { stiffness: 420, damping: 32, mass: 0.85 },
   ring: { stiffness: 260, damping: 26, mass: 1 },
-  trail: { stiffness: 120, damping: 20, mass: 1.15 },
   aura: { stiffness: 72, damping: 16, mass: 1.25 },
-  halo: { stiffness: 48, damping: 14, mass: 1.35 },
 } as const;
 
 export function modeSpringMultiplier(mode: CursorMode): number {

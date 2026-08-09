@@ -25,7 +25,10 @@ export function AnimatedText({
   }
 
   return (
-    <Tag className={cn("inline-flex flex-wrap", className)} aria-label={text}>
+    // No aria-label here: ARIA forbids it on a generic element with no role,
+    // so screen readers ignored it anyway. The accessible name comes from the
+    // word spans' own text content, which reads as the original sentence.
+    <Tag className={cn("inline-flex flex-wrap", className)}>
       {parts.map((part, i) => (
         <span key={`${part}-${i}`} className="inline-block overflow-hidden">
           <span className="inline-block" data-reveal-word>

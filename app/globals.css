@@ -12,8 +12,13 @@
   --color-surface-elevated: #131826;
   --color-surface-elevated-hover: #171d2e;
   --color-ink: #f1f5f9;
+  /* 6.9:1 on the card surface — the quietest tone that still clears WCAG AA
+     for body text. A --color-ink-subtle of #64748b sat below this and was
+     never referenced; at 3.7:1 it would have failed on anything it was used
+     for, so it is gone rather than waiting to be picked up by mistake.
+     Hierarchy below this tier is expressed with size and weight, not by
+     fading text further. */
   --color-ink-muted: #94a3b8;
-  --color-ink-subtle: #64748b;
   --color-accent: #3b82f6;
   --color-accent-deep: #2563eb;
   --color-accent-soft: #60a5fa;
@@ -41,16 +46,17 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    /* Deliberately no `scroll-behavior: smooth`. Lenis drives scrolling on
+       this site and its own docs call the native engine out as a conflict —
+       the two ease the same anchor jump simultaneously, which lands as a
+       stutter. Anchor navigation is handled in SmoothScroll.tsx, which falls
+       back to scrollIntoView when Lenis is disabled; with JS off entirely the
+       native jump still clears the navbar via scroll-margin-top below. */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-
     *,
     *::before,
     *::after {
@@ -89,6 +95,37 @@
 
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-blue-500/60;
+  }
+
+  /* The <main> skip target takes focus programmatically, so it would otherwise
+     draw a full-page-width focus ring around everything. The link that sent
+     focus here is already visibly confirmed; the ring adds nothing. */
+  main:focus,
+  main:focus-visible {
+    outline: none;
+  }
+
+  /* Parked off-screen rather than display:none — a hidden element cannot be
+     focused, which would defeat the point. */
+  .skip-link {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    z-index: 100;
+    transform: translate(-50%, -120%);
+    border-radius: 0 0 0.75rem 0.75rem;
+    background: var(--color-accent);
+    padding: 0.7rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    transition: transform 0.18s ease-out;
+  }
+
+  .skip-link:focus-visible {
+    transform: translate(-50%, 0);
+    outline-offset: -4px;
   }
 }
 
@@ -253,7 +290,12 @@
     align-items: stretch;
   }
 
-  [data-section] {
+  /* Clears the fixed dock for any anchor jump the JS handler didn't take.
+     #home-section is listed explicitly because the hero is the one section
+     without [data-section] — it has no scroll-reveal to opt into, so the
+     "Home" link used to land with the hero's top edge behind the navbar. */
+  [data-section],
+  #home-section {
     scroll-margin-top: 5.75rem;
   }
 
@@ -265,25 +307,10 @@
     @apply mx-auto w-full max-w-6xl;
   }
 
-  /* The third gradient used to centre on 50% 100% — exactly the bottom
-     edge of the section. Each section's background is hard-clipped to its
-     own box, so that put the gradient's brightest point right on the seam
-     between sections, then cut it off abruptly instead of letting it fade
-     out first — that abrupt cutoff is what read as a visible dividing
-     line. Pushing the centre past the edge (130%) means only the
-     already-fading upper part of it is ever visible, so it tapers to
-     nothing before it reaches the boundary instead of stopping hard there. */
-  /* The top-left gradient was centred at -10% — only 20% of its own radius
-     above the box — so it still had ~0.28 opacity right at the top edge,
-     same hard-cutoff problem as the bottom one had. Pushed further out
-     (-45%) so it's already faded to near-nothing by the time it reaches
-     the edge, instead of appearing abruptly. */
-  .gradient-mesh {
-    background:
-      radial-gradient(ellipse 85% 55% at 20% -45%, rgba(59, 130, 246, 0.22), transparent),
-      radial-gradient(ellipse 60% 40% at 90% 10%, rgba(96, 165, 250, 0.12), transparent),
-      radial-gradient(ellipse 70% 45% at 50% 130%, rgba(59, 130, 246, 0.14), transparent);
-  }
+  /* .gradient-mesh removed — a per-section radial wash that no section
+     rendered any more (the page moved to one shared AmbientBackground layer,
+     see the note below). It survived only as a selector the GSAP reveal pass
+     queried and never found. */
 
   /* .section-aurora removed — it was a per-section decorative glow added
      to About only, which made About's background measurably lighter than
@@ -301,21 +328,9 @@
      background gradients are top-weighted, so its bottom edge is already
      literally --color-surface. */
 
-  /* Light-to-accent shimmer for emphasised headings on the dark surface. */
-  .text-gradient {
-    background-image: linear-gradient(
-      100deg,
-      #f1f5f9 0%,
-      #60a5fa 45%,
-      #3b82f6 62%,
-      #f1f5f9 100%
-    );
-    background-size: 200% auto;
-    background-position: 0% center;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
+  /* .text-gradient removed — the light-to-accent shimmer it defined is the
+     same recipe as .mkt-heading-accent in Hero.css, which is the only place
+     that treatment is actually used. Nothing referenced this copy. */
 
   .scroll-progress-bar {
     position: absolute;
@@ -341,36 +356,17 @@
     }
   }
 
-  .glow-border {
-    position: relative;
-  }
+  /* .glow-border removed, and with it the `glow-border` class on TiltCard's
+     no-hover branch.
 
-  .glow-border::after {
-    content: "";
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.95),
-      rgba(255, 255, 255, 0.35),
-      rgba(255, 255, 255, 0.15),
-      rgba(255, 255, 255, 0.7)
-    );
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-  }
-
-  .glass-tilt:hover::after,
-  .glow-border:hover::after {
-    opacity: 1;
-  }
+     It defined ::after on the same element as .glass-card::after and was
+     declared later in the sheet, so it won: every hover-disabled card (the
+     stats panel, the resume CTA, both experience cards) silently lost the
+     bottom shadow gradient that gives a card its lift, and gained a
+     95%-white gradient rim on hover — a hover treatment on cards explicitly
+     configured to have none. The paired `.glass-tilt:hover::after` rule went
+     too: on a tilt card that selector also resolved to .glass-card::after,
+     setting an opacity it already had. */
 
   /* transform-style: preserve-3d removed — its children (border-glow,
      spotlight, specular overlays) are flat lighting effects, not real 3D
@@ -486,15 +482,20 @@
     box-shadow: 0 0 14px rgba(255, 255, 255, 0.15);
   }
 
+  /* Card hover depth. These values were carried over from the light-card
+     design and never retuned: a 12%-opacity near-black shadow is invisible
+     against a near-black page, and a 65%-white ring reads as a hard chalk
+     outline on a dark surface rather than an edge catching light. Now the
+     shadow is opaque enough to actually pool under the card, and the rim
+     sits at the same weight as --color-glass-highlight. */
   .glass-depth {
     transition: box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .glass-depth:hover {
-    box-shadow:
-      0 24px 56px rgba(15, 23, 42, 0.12),
-      0 0 0 1px rgba(255, 255, 255, 0.65),
-      inset 0 1px 0 rgba(255, 255, 255, 0.75);
+    box-shadow: var(--shadow-card-hover),
+      0 0 0 1px rgba(255, 255, 255, 0.14),
+      0 0 28px rgba(59, 130, 246, 0.12);
   }
 
   .glass-border-glow {
@@ -508,7 +509,16 @@
       rgba(255, 255, 255, 0.06) 55%,
       rgba(255, 255, 255, 0.85) 100%
     );
+    /* The standard `mask` was missing here — only the -webkit- prefixed one
+       was declared, alongside an unprefixed `mask-composite`. In Firefox that
+       means no mask is applied at all and the conic gradient fills the whole
+       card face instead of a 1px rim, so every card flooded white on hover.
+       Both properties now come in prefixed/standard pairs, as they do in the
+       identical cutout on .glass-nav::after. */
     -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
       linear-gradient(#fff 0 0) content-box,
       linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
@@ -517,20 +527,28 @@
     transition: opacity 0.4s ease;
   }
 
-  .glass-border-glow.glow-active::after {
-    opacity: 1;
-    transform: translateY(-2px) rotate(2deg);
-    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  }
+  /* A `.glass-border-glow.glow-active::after` rule sat here, driven by a
+     ScrollTrigger per card that was deliberately not once:true — so a dozen
+     live triggers ran for the whole session toggling a class whose rule
+     could never apply: .glass-border-glow has no ::after with `content`, so
+     there was no pseudo-element for it to style. Rule and triggers removed. */
 
   .ambient-orb {
     will-change: transform;
   }
 
+  /* will-change is scoped to hover rather than applied outright. The magnetic
+     translate is only ever written while the pointer is over the button, but
+     declaring it unconditionally pinned a composited layer for every button
+     on the page — around twenty — for the whole session. Same reasoning the
+     note above gives for taking it off the tilt cards. */
   .btn-magnetic-base {
-    will-change: transform;
     transition: box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
       background-color 0.25s ease, border-color 0.25s ease;
+  }
+
+  .btn-magnetic-base:hover {
+    will-change: transform;
   }
 
   /* Solid accent-blue fill, not near-black — a near-black "primary" button
@@ -597,6 +615,22 @@
   .scroll-flow {
     position: relative;
   }
+
+  /* See components/effects/PageEntrance.tsx. `both` holds the from-state
+     before the first frame so there is no flash of full-opacity content, and
+     because there is no delay the animation starts immediately on paint. */
+  .page-entrance {
+    animation: page-fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes page-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 }
 
 @layer utilities {
@@ -604,23 +638,7 @@
     text-wrap: balance;
   }
 
-  .animate-float-subtle {
-    animation: float-subtle 6s ease-in-out infinite;
-  }
-
-  @keyframes float-subtle {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-4px);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .animate-float-subtle {
-      animation: none;
-    }
-  }
+  /* .animate-float-subtle and its keyframes removed along with TiltCard's
+     `float` prop — the prop existed but no call site ever set it, so the
+     animation was unreachable. */
 }

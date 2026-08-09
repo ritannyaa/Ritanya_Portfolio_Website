@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,18 +10,27 @@ import { useActiveSection } from "@/lib/hooks/useActiveSection";
 import { cn } from "@/lib/utils/cn";
 import { easeOutExpo } from "@/lib/motion/easing";
 
+// Hoisted out of the component: this never changes, so recomputing it per
+// render only produced a new array identity for useActiveSection to react to.
+const sectionHrefs = navItems
+  .filter((n) => n.href.includes("#"))
+  .map((n) => n.href);
+
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const activeId = useActiveSection(
-    navItems.filter((n) => n.href.includes("#")).map((n) => n.href)
-  );
+  const activeId = useActiveSection(sectionHrefs);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  const isItemActive = (href: string) =>
-    href.includes("#")
-      ? pathname === "/" && href.endsWith(`#${activeId}`)
-      : pathname === href;
+  const isItemActive = useMemo(
+    () => (href: string) =>
+      href.includes("#")
+        ? pathname === "/" && href.endsWith(`#${activeId}`)
+        : pathname === href,
+    [pathname, activeId]
+  );
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 32);
@@ -30,9 +39,56 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Scroll lock, Escape to dismiss, and a focus loop confined to the panel.
+  // Without these the menu was a keyboard dead end: it could be opened but
+  // not closed, and Tab walked through the page behind it while body scroll
+  // was locked.
+  //
+  // Focus return is handled at the Escape branch rather than in cleanup. The
+  // panel leaves via an AnimatePresence exit animation, so by teardown the
+  // ref no longer reliably points at the node being removed — and the other
+  // two ways out don't want a return anyway: clicking the toggle already has
+  // focus on it, and following a link should leave focus on the section it
+  // scrolled to, not yank it back to the navbar.
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    if (!open) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        toggleRef.current?.focus();
+        return;
+      }
+      if (e.key !== "Tab") return;
+
+      const panel = menuRef.current;
+      if (!panel) return;
+      const links = panel.querySelectorAll<HTMLElement>("a[href]");
+      if (!links.length) return;
+
+      const first = links[0];
+      const last = links[links.length - 1];
+      const activeEl = document.activeElement;
+
+      // The toggle sits outside the panel, so it bookends the loop: shift-Tab
+      // off the first link returns to it, Tab off the last one wraps forward.
+      if (
+        (e.shiftKey && activeEl === first) ||
+        (!e.shiftKey && activeEl === last)
+      ) {
+        e.preventDefault();
+        toggleRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
     return () => {
+      document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = "";
     };
   }, [open]);
@@ -115,13 +171,15 @@ export function Navbar() {
         </ul>
 
         <button
+          ref={toggleRef}
           type="button"
           data-cursor="button"
           data-magnetic
-          className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm font-medium text-slate-200 transition-[background-color,transform] duration-150 hover:bg-white/10 active:scale-90 lg:hidden"
+          className="inline-flex min-h-[36px] shrink-0 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm font-medium text-slate-200 transition-[background-color,transform] duration-150 hover:bg-white/10 active:scale-90 lg:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="mobile-menu"
+          aria-label={open ? "Close navigation menu" : "Open navigation menu"}
         >
           <motion.span
             key={open ? "close" : "open"}
@@ -140,6 +198,7 @@ export function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
+            ref={menuRef}
             id="mobile-menu"
             initial={{ opacity: 0, height: 0, y: -12 }}
             animate={{ opacity: 1, height: "auto", y: 0 }}

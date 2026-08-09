@@ -12,7 +12,6 @@ type TiltCardProps = {
   hover?: boolean;
   id?: string;
   intensity?: number;
-  float?: boolean;
 };
 
 export function TiltCard({
@@ -21,7 +20,6 @@ export function TiltCard({
   hover = true,
   id,
   intensity = 8,
-  float = false,
 }: TiltCardProps) {
   const reduced = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
@@ -93,7 +91,7 @@ export function TiltCard({
 
   if (reduced || !hover) {
     return (
-      <div id={id} className={cn("glass-card glow-border", className)}>
+      <div id={id} className={cn("glass-card", className)}>
         <div className="relative z-10">{children}</div>
       </div>
     );
@@ -108,7 +106,6 @@ export function TiltCard({
       data-magnetic-strength="0.28"
       className={cn(
         "glass-card glass-tilt glass-depth group relative isolate",
-        float && "animate-float-subtle",
         className
       )}
       style={{

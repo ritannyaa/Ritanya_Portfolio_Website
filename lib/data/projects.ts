@@ -1,66 +1,77 @@
 export type Project = {
   id: string;
-  title: string;
-  description: string;
+  /** Short codename shown as the card title. */
+  name: string;
+  /** One line, lowercase-ish: what the thing actually is. */
+  kicker: string;
+  /** What it does and why it exists. Two sentences, no more. */
+  blurb: string;
+  /** The engineering decision or constraint that shaped it. */
+  hardPart: string;
+  /** Set only where the honest answer is "not finished" — renders as a chip. */
+  status?: string;
   image: string;
-  github: string;
+  /** Optional: a card with no verified repo renders no repo button at all,
+   *  rather than a link that 404s. */
+  github?: string;
   live?: string;
   tech: string[];
-  featured?: boolean;
 };
 
 export const projectsIntro =
-  "Each project reflects my strength in combining data, logic, and innovation to build solutions that solve challenges and create measurable value.";
+  "Three systems, each still in progress in one way or another. What follows is why I started them and which part turned out to be the actual problem.";
 
 export const projects: Project[] = [
   {
-    id: "internship-analyzer",
-    title: "AI-Assisted Cloud Security & Compliance Scanner",
-    description:
-        'VERDICT is a full-stack AI-powered Infrastructure-as-Code (IaC) security scanner that analyzes AWS, Azure, GCP, and AliCloud Terraform repositories for security misconfigurations and compliance risks. It combines a deterministic rule engine with RAG-grounded LLM reasoning to detect vulnerabilities, explain attack paths, verify CVEs against the National Vulnerability Database (NVD), and generate AI-powered step-by-step remediation guidance. Built with Python, FastAPI, PostgreSQL, Redis, ChromaDB, Docker, and LLaMA 3, it delivers precise, explainable security analysis while maintaining a zero-false-positive deterministic detection pipeline.',
-    image: "/images/image_1.jpg",
-    github: "https://github.com/yaheshmaheshwaran/Internship-analyzer.git",
-    tech: ["CloudSecurity","DevSecOps","AI","LLM","RAG","MachineLearning","CyberSecurity"]
+    id: "verdict",
+    name: "VERDICT",
+    kicker: "IaC security scanner for Terraform",
+    blurb:
+      "Point it at a Terraform repo — AWS, Azure, GCP or AliCloud — and it reports the misconfigurations, traces the attack path each one opens up, and checks any CVE it surfaces against the National Vulnerability Database. I built it because the scanners I tried either buried you in findings or handed you a rule ID with no explanation of why it mattered.",
+    hardPart:
+      "Keeping the model out of the detection path. One hallucinated vulnerability makes the entire report untrustworthy, so detection is a deterministic rule engine and LLaMA 3 only explains what the engine found and drafts the remediation steps, grounded in retrieved docs through ChromaDB. FastAPI, PostgreSQL and Redis behind it, the whole thing in Docker.",
+    image: "/images/verdict.jpg",
+    /* Corrected 2026-08-05. This pointed at `Internship-analyzer`, which holds
+       a single file called "Internship Market Analyzer.py" — a different
+       project entirely. `Security-System-Checker` is this one: its README
+       describes an IaC scanner over Terraform, Kubernetes and IAM built on
+       FastAPI, PostgreSQL, Redis, ChromaDB and LLaMA 3, which is every
+       technology listed on this card.
+
+       NOTE: that repo calls the project SentinelIQ, not VERDICT. Pick one
+       name and use it in both places. */
+    github: "https://github.com/yaheshmaheshwaran/Security-System-Checker",
+    tech: ["Python", "FastAPI", "PostgreSQL", "Redis", "ChromaDB", "Docker", "LLaMA 3"],
   },
   {
-    id: "air-pollution",
-    title: "Al Finance Assistant (APP)",
-    description:
-      'SAVVY is an AI-powered personal finance platform designed to transform raw financial data into actionable insights through intelligent analytics. The project follows a modular architecture spanning data ingestion, feature engineering, machine learning, backend services, and a mobile application. It is currently in its foundational development phase, with a working CSV transaction ingestion pipeline and a structured, scalable codebase prepared for future AI, analytics, and application development. The long-term vision is to deliver automated expense analysis, spending intelligence, budgeting, and financial decision support for users.',
-    image: "/images/image_2.jpg",
-    github:
-      "https://github.com/yaheshmaheshwaran/Air-Pollution-Early-Warning-System.git",
-    tech: [
-
-    "AI Engineering",
-
-    "Machine Learning",
-
-    "Backend Development",
-
-    "Cloud Computing",
-
-    "System Design",
-
-    "Python",
-
-    "React",
-
-    "API Development",
-
-    "Scalable Systems",
-
-    "Software Engineering"
-
-],
+    id: "savvy",
+    name: "SAVVY",
+    kicker: "personal finance, built from the bottom up",
+    blurb:
+      "An attempt at software that reads a bank CSV and tells you something about your spending you didn't already know. The transaction ingestion pipeline works end to end; feature engineering, the models and the mobile app are scaffolded and not yet built.",
+    hardPart:
+      "Starting at the boring layer on purpose. I've begun projects at the model before and watched them stall the moment real data didn't line up with what I'd assumed, so this one starts at ingestion — one schema every stage above it can rely on, decided before any of those stages exist.",
+    status: "Early — ingestion works, the rest is scaffolding",
+    image: "/images/savvy.jpg",
+    // No `github` on purpose: the URL previously here
+    // (Air-Pollution-Early-Warning-System) returns 404. Add the real repo when
+    // it's public and the button comes back automatically.
+    tech: ["Python", "pandas", "React", "REST APIs"],
   },
   {
-    id: "class-management",
-    title: "AI-powered EV battery health intelligence platform",
-    description:
-      "VOLTIQ v3.0 is an AI-powered EV battery health intelligence platform that processes live battery telemetry to estimate State of Health (SoH), predict Remaining Useful Life (RUL), detect anomalies, and generate driver coaching insights. It combines Extended Kalman Filter and Arrhenius-based battery physics with ML models including XGBoost, LightGBM, LSTM, and Isolation Forest, delivered through a FastAPI backend with Redis caching and Android Automotive support. The platform features a real-time LFP battery simulator, live telemetry pipeline, REST APIs, interactive dashboard, and comprehensive testing for scalable battery analytics.",
-    image: "/images/image_3.jpg",
-    github: "https://github.com/yaheshmaheshwaran/VendingMachine",
-    tech: ["EV", "ElectricVehicles","Python", "IoT","CleanTech","BatteryTechnology", "BatteryHealth", "ArtificialIntelligence", "MachineLearning","FastAPI", "IoT"],
+    id: "voltiq",
+    name: "VOLTIQ v3.0",
+    kicker: "EV battery health from live telemetry",
+    blurb:
+      "Reads live battery telemetry to estimate State of Health, predict Remaining Useful Life, flag anomalies, and turn all of that into coaching a driver can act on. It runs against a real-time LFP battery simulator I wrote first, so the pipeline could be tested without access to a car.",
+    hardPart:
+      "Not letting the models answer on their own. Battery degradation has real physics under it, so an Extended Kalman Filter and an Arrhenius model carry the state estimate, and XGBoost, LightGBM, LSTM and Isolation Forest sit on top for prediction and anomaly detection. FastAPI with Redis caching serves it; Android Automotive was the target surface.",
+    image: "/images/voltiq.jpg",
+    /* No `github` — this pointed at the `VendingMachine` repo, which contains
+       exactly one file, `vending_machine.py`. Anyone clicking through would
+       have concluded the card was fabricated, which is worse than no link at
+       all. Add the real URL here when the repo is public and the button comes
+       back on its own. */
+    tech: ["Python", "FastAPI", "Redis", "XGBoost", "LightGBM", "LSTM", "Android Automotive"],
   },
 ];

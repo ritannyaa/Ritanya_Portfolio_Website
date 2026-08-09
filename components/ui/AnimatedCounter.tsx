@@ -8,6 +8,9 @@ type AnimatedCounterProps = {
   value: number;
   label: string;
   duration?: number;
+  /** True when the number is a real count the visitor can verify by scrolling
+   *  — suppresses the "+", which would otherwise claim more than there is. */
+  exact?: boolean;
   /** Optional extra class for the number itself, e.g. a page-scoped glow. */
   numberClassName?: string;
 };
@@ -16,6 +19,7 @@ export function AnimatedCounter({
   value,
   label,
   duration = 2000,
+  exact = false,
   numberClassName,
 }: AnimatedCounterProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -72,9 +76,11 @@ export function AnimatedCounter({
         )}
       >
         <span ref={numberRef}>0</span>
-        <span className="ml-0.5 align-top text-xl text-slate-400 transition-colors duration-300 group-hover:text-blue-400 sm:text-2xl">
-          +
-        </span>
+        {!exact && (
+          <span className="ml-0.5 align-top text-xl text-slate-400 transition-colors duration-300 group-hover:text-blue-400 sm:text-2xl">
+            +
+          </span>
+        )}
       </p>
       <p className="mt-2 text-sm font-medium text-slate-400">{label}</p>
     </div>
