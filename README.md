@@ -1,4 +1,4 @@
-# Yahesh M — Portfolio
+# Ritanya B — Portfolio
 
 Personal portfolio built with Next.js (App Router), React 19, Tailwind CSS v4,
 and Framer Motion.
@@ -108,3 +108,4 @@ first.
 Security headers (`X-Frame-Options`, `X-Content-Type-Options`,
 `Referrer-Policy`, `Permissions-Policy`) are set in `next.config.ts` and apply
 to every route.
+# portfolio
