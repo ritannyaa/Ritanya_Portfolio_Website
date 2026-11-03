@@ -12,13 +12,13 @@ const orbs = [
     className: "left-[5%] top-[12%] h-80 w-80",
     duration: 26,
     delay: 0,
-    color: "rgba(59, 130, 246, 0.14)",
+    color: "rgba(245, 158, 11, 0.14)",
   },
   {
     className: "right-[6%] top-[22%] h-[28rem] w-[28rem]",
     duration: 30,
     delay: 3,
-    color: "rgba(96, 165, 250, 0.1)",
+    color: "rgba(251, 191, 36, 0.1)",
   },
 ] as const;
 

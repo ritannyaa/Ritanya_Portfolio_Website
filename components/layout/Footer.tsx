@@ -16,8 +16,8 @@ export function Footer() {
       <div className="section-container px-4 pb-10 pt-16 sm:px-6 lg:px-8">
         <div data-reveal-stagger className="grid gap-10 md:grid-cols-3">
           <div>
-            <h2 className="mb-3 text-lg font-semibold text-slate-100">About</h2>
-            <p className="text-sm leading-relaxed text-slate-400">
+            <h2 className="mb-3 text-lg font-semibold text-stone-100">About</h2>
+            <p className="text-sm leading-relaxed text-stone-400">
               {footerContent.about}
             </p>
             <ul className="mt-5 flex gap-3">
@@ -29,7 +29,7 @@ export function Footer() {
                   data-cursor="button"
                   data-magnetic
                   data-magnetic-strength="0.26"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 transition duration-300 hover:-translate-y-0.5 hover:scale-105 hover:border-blue-400/50 hover:bg-white/10 hover:text-[var(--color-accent-soft)] hover:shadow-md hover:shadow-blue-500/15"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-stone-300 transition duration-300 hover:-translate-y-0.5 hover:scale-105 hover:border-amber-400/50 hover:bg-white/10 hover:text-[var(--color-accent-soft)] hover:shadow-md hover:shadow-amber-500/15"
                   aria-label="LinkedIn"
                 >
                   <Linkedin className="h-4 w-4" />
@@ -43,7 +43,7 @@ export function Footer() {
                   data-cursor="button"
                   data-magnetic
                   data-magnetic-strength="0.26"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 transition duration-300 hover:-translate-y-0.5 hover:scale-105 hover:border-blue-400/50 hover:bg-white/10 hover:text-[var(--color-accent-soft)] hover:shadow-md hover:shadow-blue-500/15"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-stone-300 transition duration-300 hover:-translate-y-0.5 hover:scale-105 hover:border-amber-400/50 hover:bg-white/10 hover:text-[var(--color-accent-soft)] hover:shadow-md hover:shadow-amber-500/15"
                   aria-label="GitHub"
                 >
                   <Github className="h-4 w-4" />
@@ -55,7 +55,7 @@ export function Footer() {
                   data-cursor="button"
                   data-magnetic
                   data-magnetic-strength="0.26"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 transition duration-300 hover:-translate-y-0.5 hover:scale-105 hover:border-blue-400/50 hover:bg-white/10 hover:text-[var(--color-accent-soft)] hover:shadow-md hover:shadow-blue-500/15"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-stone-300 transition duration-300 hover:-translate-y-0.5 hover:scale-105 hover:border-amber-400/50 hover:bg-white/10 hover:text-[var(--color-accent-soft)] hover:shadow-md hover:shadow-amber-500/15"
                   aria-label="Email"
                 >
                   <Mail className="h-4 w-4" />
@@ -65,10 +65,10 @@ export function Footer() {
           </div>
 
           <div>
-            <h2 className="mb-3 text-lg font-semibold text-slate-100">
+            <h2 className="mb-3 text-lg font-semibold text-stone-100">
               {footerContent.rolesTitle}
             </h2>
-            <ul className="space-y-2 text-sm text-slate-400">
+            <ul className="space-y-2 text-sm text-stone-400">
               {footerContent.roles.map((role) => (
                 <li key={role}>{role}</li>
               ))}
@@ -79,20 +79,20 @@ export function Footer() {
             {/* Was "Have a Questions?" — a grammatical error sitting in a
                 heading, which is the kind of thing a reader notices and
                 silently downgrades you for. */}
-            <h2 className="mb-3 text-lg font-semibold text-slate-100">
+            <h2 className="mb-3 text-lg font-semibold text-stone-100">
               {footerContent.contactTitle}
             </h2>
-            <ul className="space-y-3 text-sm text-slate-400">
+            <ul className="space-y-3 text-sm text-stone-400">
               <li className="flex gap-2">
                 {/* Short form here on purpose — the full "studying in
                     Coimbatore" phrasing already appears in About and in
                     Contact, and a third verbatim repeat reads as one variable
                     wired into three slots. */}
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-stone-500" />
                 <span>{siteConfig.home}</span>
               </li>
               <li className="flex gap-2">
-                <Phone className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
+                <Phone className="mt-0.5 h-4 w-4 shrink-0 text-stone-500" />
                 <a
                   href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
                   className="transition-colors duration-200 hover:text-[var(--color-accent-soft)]"
@@ -101,7 +101,7 @@ export function Footer() {
                 </a>
               </li>
               <li className="flex gap-2">
-                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
+                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-stone-500" />
                 <a
                   href={`mailto:${siteConfig.email}`}
                   className="transition-colors duration-200 hover:text-[var(--color-accent-soft)]"
@@ -118,7 +118,7 @@ export function Footer() {
             go read it. */}
         <p
           data-reveal
-          className="mt-12 border-t border-white/8 pt-8 text-center text-sm text-slate-400"
+          className="mt-12 border-t border-white/8 pt-8 text-center text-sm text-stone-400"
         >
           © {new Date().getFullYear()} {siteConfig.name} · Built with Next.js
           and too many small revisions ·{" "}

@@ -32,8 +32,10 @@ const urbanist = Urbanist({
   weight: ["500", "600", "700"],
 });
 
-const DESCRIPTION =
-  "Yahesh M — pre-final year B.Tech in AI & Data Science. I build backends and ML systems: a Terraform security scanner, an EV battery health platform, and a personal finance pipeline.";
+/* Interpolated rather than spelled out, so the owner's name lives in exactly
+   one place (lib/data/site.ts) and cannot drift out of sync with the page the
+   crawler actually reads. */
+const DESCRIPTION = `${siteConfig.name} — pre-final year B.Tech in AI & Data Science. I build backends and ML systems: a Terraform security scanner, an EV battery health platform, and a personal finance pipeline.`;
 
 export const metadata: Metadata = {
   // Resolves every relative URL below (canonical, OG image) against the real
@@ -43,15 +45,15 @@ export const metadata: Metadata = {
   title: {
     default: siteConfig.title,
     // Sub-pages set only their own name; this supplies the suffix once
-    // instead of each page repeating "— Yahesh M" by hand.
-    template: "%s — Yahesh M",
+    // instead of each page repeating the owner's name by hand.
+    template: `%s — ${siteConfig.name}`,
   },
   description: DESCRIPTION,
   applicationName: siteConfig.name,
   authors: [{ name: siteConfig.name, url: siteConfig.url }],
   creator: siteConfig.name,
   keywords: [
-    "Yahesh M",
+    siteConfig.name,
     "AI and Data Science",
     "backend engineer",
     "machine learning",
@@ -95,8 +97,8 @@ export const viewport: Viewport = {
   // No maximumScale/userScalable lock — pinch-zoom must stay available
   // (WCAG 1.4.4).
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0b0f19" },
-    { media: "(prefers-color-scheme: light)", color: "#0b0f19" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0b" },
+    { media: "(prefers-color-scheme: light)", color: "#0a0a0b" },
   ],
 };
 

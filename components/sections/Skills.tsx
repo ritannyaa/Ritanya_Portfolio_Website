@@ -13,6 +13,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { BentoGrid, BentoItem } from "@/components/ui/BentoGrid";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
+import { cn } from "@/lib/utils/cn";
 
 const icons = {
   code: Code2,
@@ -27,9 +28,9 @@ function SkillBar({ name, level }: { name: string; level: Level }) {
   return (
     <div className="group space-y-2">
       <div className="flex items-center justify-between gap-2 text-sm">
-        <span className="font-medium text-slate-200">{name}</span>
+        <span className="font-medium text-stone-200">{name}</span>
         {/* The word, not a percentage — see the note in lib/data/skills.ts. */}
-        <span className="text-xs text-slate-400">{label}</span>
+        <span className="text-xs text-stone-400">{label}</span>
       </div>
       <div
         className="relative h-2 overflow-hidden rounded-full bg-white/8"
@@ -37,7 +38,7 @@ function SkillBar({ name, level }: { name: string; level: Level }) {
         aria-label={`${name}: ${label}`}
       >
         <motion.div
-          className="relative h-full origin-left rounded-full bg-gradient-to-r from-blue-500 to-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.35)] transition-[filter] duration-300 group-hover:brightness-110"
+          className="relative h-full origin-left rounded-full bg-gradient-to-r from-amber-500 to-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.35)] transition-[filter] duration-300 group-hover:brightness-110"
           style={{ width: `${value}%` }}
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
@@ -82,14 +83,14 @@ export function Skills() {
                 <div className="h-full">
                   <GlassCard className="h-full p-6 sm:p-8">
                     <div className="mb-1 flex items-center gap-3">
-                      <span className="inline-flex rounded-xl bg-blue-500/12 p-2.5 text-[var(--color-accent-soft)]">
+                      <span className="inline-flex rounded-xl bg-amber-500/12 p-2.5 text-[var(--color-accent-soft)]">
                         <Icon className="h-5 w-5" />
                       </span>
-                      <h3 className="text-lg font-semibold text-slate-100">
+                      <h3 className="text-lg font-semibold text-stone-100">
                         {cat.title}
                       </h3>
                     </div>
-                    <p className="mb-5 text-xs leading-relaxed text-slate-400">
+                    <p className="mb-5 text-xs leading-relaxed text-stone-400">
                       {cat.note}
                     </p>
 
@@ -113,9 +114,9 @@ export function Skills() {
                         {cat.points.map((point) => (
                           <li
                             key={point}
-                            className="flex items-start gap-2.5 text-sm leading-snug text-slate-400"
+                            className="flex items-start gap-2.5 text-sm leading-snug text-stone-400"
                           >
-                            <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-blue-500" />
+                            <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber-500" />
                             {point}
                           </li>
                         ))}
@@ -130,7 +131,12 @@ export function Skills() {
 
         <div id="section-counter" className="mt-10 sm:mt-12">
           <GlassCard className="p-8 sm:p-10" hover={false}>
-            <div className="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-6">
+            <div
+              className={cn(
+                "grid grid-cols-2 gap-8 md:gap-6",
+                statsContent.length === 3 ? "md:grid-cols-3" : "md:grid-cols-4"
+              )}
+            >
               {statsContent.map((stat) => (
                 <AnimatedCounter
                   key={stat.label}

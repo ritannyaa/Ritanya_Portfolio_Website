@@ -9,6 +9,9 @@ import { MagneticButton } from "@/components/ui/MagneticButton";
 const SHOWN = 3;
 
 export function Certificates() {
+  // Nothing to show — render no section rather than a heading over an empty grid.
+  if (certificates.length === 0) return null;
+
   return (
     <section
       id="certificates-section"

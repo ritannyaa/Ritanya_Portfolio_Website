@@ -19,7 +19,7 @@ export function ExperienceCard({ item }: ExperienceCardProps) {
           target="_blank"
           rel="noopener noreferrer"
           data-cursor="button"
-          className="relative block w-full overflow-hidden bg-slate-800 aspect-[16/10] transition-transform duration-150 active:scale-[0.98]"
+          className="relative block w-full overflow-hidden bg-stone-800 aspect-[16/10] transition-transform duration-150 active:scale-[0.98]"
           aria-label={`View certificate for ${item.role}`}
         >
           <Image
@@ -31,22 +31,22 @@ export function ExperienceCard({ item }: ExperienceCardProps) {
             loading="lazy"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/55 via-slate-900/10 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-stone-900/55 via-stone-900/10 to-transparent" />
         </a>
       )}
 
       <div className="flex flex-1 flex-col p-6 sm:p-8">
-        <p className="mb-2 flex items-center gap-1.5 text-xs font-medium text-slate-400">
+        <p className="mb-2 flex items-center gap-1.5 text-xs font-medium text-stone-400">
           <Briefcase className="h-3.5 w-3.5" />
           {item.type}
         </p>
 
-        <h3 className="text-xl font-semibold text-slate-100">{item.role}</h3>
-        <p className="mt-1 text-sm font-medium text-slate-400">
+        <h3 className="text-xl font-semibold text-stone-100">{item.role}</h3>
+        <p className="mt-1 text-sm font-medium text-stone-400">
           {item.organization} &middot; {item.duration}
         </p>
 
-        <p className="mt-4 text-sm leading-relaxed text-slate-400">
+        <p className="mt-4 text-sm leading-relaxed text-stone-400">
           {item.description}
         </p>
 
@@ -54,7 +54,7 @@ export function ExperienceCard({ item }: ExperienceCardProps) {
             reason the entry is worth reading, and burying it under three
             résumé verbs is what made these cards interchangeable. */}
         {item.takeaway && (
-          <p className="mt-4 border-l-2 border-blue-500/40 pl-3.5 text-sm leading-relaxed text-slate-300">
+          <p className="mt-4 border-l-2 border-amber-500/40 pl-3.5 text-sm leading-relaxed text-stone-300">
             {item.takeaway}
           </p>
         )}
@@ -62,8 +62,8 @@ export function ExperienceCard({ item }: ExperienceCardProps) {
         {item.highlights && item.highlights.length > 0 && (
           <ul className="mt-4 flex-1 space-y-1.5">
             {item.highlights.map((point) => (
-              <li key={point} className="flex items-start gap-2 text-sm text-slate-400">
-                <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-blue-500" />
+              <li key={point} className="flex items-start gap-2 text-sm text-stone-400">
+                <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber-500" />
                 {point}
               </li>
             ))}

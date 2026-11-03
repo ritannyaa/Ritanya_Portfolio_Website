@@ -14,30 +14,33 @@ export type Certificate = {
 };
 
 export const certificatesIntro =
-  "Course certificates and one timed assessment. The ones carrying a verify link have a real one — click through and check.";
+  "Course certificates from IBM and MongoDB. Every one carries a verify link — click through and check.";
 
 /* Ordered by what's worth seeing first, not by date: the home page shows the
-   top three, and five consecutive IBM entries made that row read as one
-   repeated card. Interleaving the issuers fixes it without reordering
-   anything on the /certificates page in a way that matters. */
+   top three, and four consecutive IBM entries would make that row read as one
+   repeated card. MongoDB sits second to break it up.
+
+   If this list is ever emptied, the home section, its nav link, the
+   /certificates page (and its sitemap entry) and the Certifications stat all
+   hide themselves. Scans go in public/certificates/ — see the README there. */
 export const certificates: Certificate[] = [
   {
     id: "ibm-deep-learning-keras",
-    title: "Deep Learning & Neural Networks with Keras",
+    title: "Introduction to Deep Learning & Neural Networks with Keras",
     issuer: "IBM · Coursera",
     note: "Where forward and backpropagation stopped being a diagram and started being something I could implement.",
-    date: "Dec 2025",
-    image: "/certificates/ibm-deep-learning-keras.jpg",
-    link: "https://coursera.org/share/e5abe261b13af1791325eec55a67b8c4",
+    date: "Jan 2026",
+    image: "/certificates/ibm-deep-learning-keras-vez0kzf2fcdb.jpg",
+    link: "https://coursera.org/verify/VEZ0KZF2FCDB",
   },
   {
-    id: "hackerrank-problem-solving",
-    title: "Problem Solving (Basic)",
-    issuer: "HackerRank",
-    note: "A timed algorithmic assessment — useful mostly as calibration for how I actually perform under a clock.",
-    date: "Apr 2025",
-    image: "/certificates/hackerrank-problem-solving.jpg",
-    link: "https://www.hackerrank.com/certificates/iframe/0f662b572d2f",
+    id: "mongodb-basics",
+    title: "MongoDB Basics for Students",
+    issuer: "MongoDB",
+    note: "Documents, collections and CRUD — the non-relational side of the data layer, next to the SQL course below.",
+    date: "Jul 2026",
+    image: "/certificates/mongodb-basics-f3b4f76a.jpg",
+    link: "https://www.credly.com/badges/f3b4f76a-c0d5-4333-9b0a-1b4413ace6f4",
   },
   {
     id: "ibm-machine-learning-python",
@@ -45,17 +48,17 @@ export const certificates: Certificate[] = [
     issuer: "IBM · Coursera",
     note: "The whole loop — preprocessing, feature work, regression, classification, clustering, and how to tell if any of it worked.",
     date: "Dec 2025",
-    image: "/certificates/ibm-machine-learning-python.jpg",
-    link: "https://coursera.org/share/0ef11c05b1e2e6f343ddf643e059856f",
+    image: "/certificates/ibm-machine-learning-python-r0bm3d588789.jpg",
+    link: "https://coursera.org/verify/R0BM3D588789",
   },
   {
     id: "ibm-databases-sql",
-    title: "Databases and SQL for Data Science",
+    title: "Databases and SQL for Data Science with Python",
     issuer: "IBM · Coursera",
     note: "Joins, aggregation and subqueries, driven from Python rather than typed into a console.",
     date: "Jul 2025",
-    image: "/certificates/ibm-databases-sql.jpg",
-    link: "https://coursera.org/share/c5583f9cca4ee034a5d797c66591771b",
+    image: "/certificates/ibm-databases-sql-bmadmegp8t54.jpg",
+    link: "https://coursera.org/verify/BMADMEGP8T54",
   },
   {
     id: "ibm-python-data-science",
@@ -63,33 +66,7 @@ export const certificates: Certificate[] = [
     issuer: "IBM · Coursera",
     note: "Python from fundamentals through OOP and file handling — the base everything after this sits on.",
     date: "Jul 2025",
-    image: "/certificates/ibm-python-data-science.jpg",
-    link: "https://coursera.org/share/ddc94b289e6a1eba238b68ddbdcdb536",
-  },
-  {
-    id: "simplilearn-python",
-    title: "Python for Beginners",
-    issuer: "Simplilearn SkillUp",
-    note: "The first structured Python course I finished rather than abandoned halfway.",
-    date: "Apr 2025",
-    image: "/certificates/simplilearn-python.jpg",
-    link: "https://simpli-web.app.link/e/86Fmpi10Z4b",
-  },
-  {
-    id: "great-learning-python",
-    title: "Python Fundamentals for Beginners",
-    issuer: "Great Learning Academy",
-    note: "Loops, functions and data structures. Groundwork.",
-    date: "Feb 2025",
-    image: "/certificates/great-learning-python.jpg",
-    // No verify link available for this one.
-  },
-  {
-    id: "ai-for-all",
-    title: "AI For All — AI Aware",
-    issuer: "Intel · CBSE · Digital India",
-    note: "A national AI-literacy program. Not deep, but it's where the interest actually started.",
-    date: "Oct 2024",
-    image: "/certificates/ai-for-all.jpg",
+    image: "/certificates/ibm-python-data-science-po7km5f5iuqa.jpg",
+    link: "https://coursera.org/verify/PO7KM5F5IUQA",
   },
 ];

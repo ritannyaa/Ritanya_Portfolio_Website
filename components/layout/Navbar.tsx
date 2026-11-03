@@ -124,7 +124,7 @@ export function Navbar() {
           data-cursor="button"
           data-magnetic
           data-magnetic-strength="0.2"
-          className="font-heading relative shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-semibold tracking-wide text-slate-100 transition-[opacity,transform] duration-150 hover:opacity-80 active:scale-95"
+          className="font-heading relative shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-semibold tracking-wide text-stone-100 transition-[opacity,transform] duration-150 hover:opacity-80 active:scale-95"
         >
           {siteConfig.name.toUpperCase()}
         </Link>
@@ -148,21 +148,24 @@ export function Navbar() {
                   data-magnetic-strength="0.24"
                   className={cn(
                     "group relative z-10 block whitespace-nowrap rounded-full px-2.5 py-1.5 text-[13px] font-medium transition-[color,transform] duration-200 active:scale-90 lg:px-3",
+                    // The active pill is filled with the accent, and the accent
+                    // is light — white on it fails contrast outright. See
+                    // --color-on-accent in globals.css.
                     isActive
-                      ? "text-white"
-                      : "text-slate-400 hover:text-slate-100"
+                      ? "text-[var(--color-on-accent)]"
+                      : "text-stone-400 hover:text-stone-100"
                   )}
                 >
                   {isActive && (
                     <motion.span
                       layoutId="nav-active-pill"
-                      className="absolute inset-0 -z-10 rounded-full bg-[var(--color-accent)] shadow-md shadow-blue-500/30"
+                      className="absolute inset-0 -z-10 rounded-full bg-[var(--color-accent)] shadow-md shadow-amber-500/30"
                       transition={{ type: "spring", stiffness: 380, damping: 32 }}
                     />
                   )}
                   <span className="relative">{item.label}</span>
                   {!isActive && (
-                    <span className="absolute bottom-1 left-1/2 h-px w-0 -translate-x-1/2 bg-blue-400/70 transition-all duration-300 group-hover:w-3/4" />
+                    <span className="absolute bottom-1 left-1/2 h-px w-0 -translate-x-1/2 bg-amber-400/70 transition-all duration-300 group-hover:w-3/4" />
                   )}
                 </a>
               </li>
@@ -175,7 +178,7 @@ export function Navbar() {
           type="button"
           data-cursor="button"
           data-magnetic
-          className="inline-flex min-h-[36px] shrink-0 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm font-medium text-slate-200 transition-[background-color,transform] duration-150 hover:bg-white/10 active:scale-90 lg:hidden"
+          className="inline-flex min-h-[36px] shrink-0 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm font-medium text-stone-200 transition-[background-color,transform] duration-150 hover:bg-white/10 active:scale-90 lg:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="mobile-menu"
@@ -232,8 +235,8 @@ export function Navbar() {
                     className={cn(
                       "block rounded-xl px-4 py-3 text-sm font-medium transition-[background-color,color,transform] duration-150 active:scale-95",
                       isItemActive(item.href)
-                        ? "bg-[var(--color-accent)] text-white"
-                        : "text-slate-300 hover:bg-white/10 hover:text-slate-100"
+                        ? "bg-[var(--color-accent)] text-[var(--color-on-accent)]"
+                        : "text-stone-300 hover:bg-white/10 hover:text-stone-100"
                     )}
                   >
                     {item.label}

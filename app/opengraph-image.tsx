@@ -19,11 +19,11 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "0 90px",
-          background: "#0b0f19",
+          background: "#0a0a0b",
           // Matches the hero's top-weighted radial wash.
           backgroundImage:
-            "radial-gradient(ellipse 80% 60% at 15% 0%, rgba(59,130,246,0.30), transparent 60%), radial-gradient(ellipse 60% 50% at 95% 25%, rgba(96,165,250,0.18), transparent 60%)",
-          color: "#f1f5f9",
+            "radial-gradient(ellipse 80% 60% at 15% 0%, rgba(245,158,11,0.30), transparent 60%), radial-gradient(ellipse 60% 50% at 95% 25%, rgba(251,191,36,0.18), transparent 60%)",
+          color: "#fafaf9",
           fontFamily: "sans-serif",
         }}
       >
@@ -33,7 +33,7 @@ export default function OpenGraphImage() {
             fontSize: 26,
             letterSpacing: 6,
             textTransform: "uppercase",
-            color: "#60a5fa",
+            color: "#fbbf24",
           }}
         >
           {siteConfig.name}
@@ -59,7 +59,7 @@ export default function OpenGraphImage() {
             marginTop: 30,
             fontSize: 30,
             lineHeight: 1.4,
-            color: "#94a3b8",
+            color: "#a8a29e",
             maxWidth: 900,
           }}
         >
@@ -84,7 +84,7 @@ export default function OpenGraphImage() {
                 border: "1px solid rgba(255,255,255,0.14)",
                 background: "rgba(255,255,255,0.05)",
                 fontSize: 24,
-                color: "#cbd5e1",
+                color: "#d6d3d1",
               }}
             >
               {tag}

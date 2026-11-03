@@ -1,14 +1,16 @@
+import { certificates } from "./certificates";
+
 export const siteConfig = {
-  name: "Yahesh M",
-  title: "Yahesh M — AI & Data Science",
+  name: "Ritanya B",
+  title: "Ritanya B — AI & Data Science",
   /* Absolute origin. Next needs this to resolve Open Graph and canonical URLs;
      without it every social preview URL is emitted relative and breaks the
      moment the page is shared anywhere. Set NEXT_PUBLIC_SITE_URL in the host
      environment (Vercel: Project → Settings → Environment Variables) and this
      follows automatically. */
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://yaheshm.vercel.app",
-  email: "yahesh.m2006@gmail.com",
-  phone: "+91 96290 26395",
+  email: "ritanyabtm@gmail.com",
+  phone: "+91 70105 81634",
   // One home town, one place of study. These used to disagree with each other
   // (Contact said Erode, the footer said Coimbatore) because they were two
   // separate strings; they're one fact now, phrased once.
@@ -16,8 +18,8 @@ export const siteConfig = {
   studyingIn: "Coimbatore",
   location: "Erode, Tamil Nadu — studying in Coimbatore",
   dob: "December 20, 2006",
-  linkedin: "https://www.linkedin.com/in/yahesh-m-078244329",
-  github: "https://github.com/yaheshmaheshwaran",
+  linkedin: "https://www.linkedin.com/in/ritanya-balamurugan-a1a5403b7",
+  github: "https://github.com/ritannyaa",
   repo: "https://github.com/yaheshmaheshwaran/Yahesh_Portfolio",
   resumeUrl:
     "https://drive.google.com/file/d/1lRq4DURBk0uSGj-DQ2bSbTGvIulCVm_U/view?usp=share_link",
@@ -37,7 +39,10 @@ export const navItems = [
   { label: "Skills", href: "/#skills-section" },
   { label: "Resume", href: "/#resume-section" },
   { label: "Contact", href: "/#contact-section" },
-] as const;
+  // No link to a section that isn't rendered — Certificates hides itself when empty.
+].filter(
+  (item) => item.href !== "/#certificates-section" || certificates.length > 0
+);
 
 /* Hero copy lives here rather than inside Hero.tsx, same as every other
    section — the component owns the typewriter, not the words. */
@@ -46,8 +51,8 @@ export const heroContent = {
      the accent treatment is applied to whatever follows the last one — here
      that puts the specialisation in the accent gradient. */
   heading:
-    "Hi!\nI am Yahesh M\na pre-final year B.Tech student, specializing in\nAI and Data Science",
-  name: "Yahesh M",
+    "Hi!\nI am Ritanya B\na pre-final year B.Tech student, specializing in\nAI and Data Science",
+  name: "Ritanya B",
   availability: "Looking for an internship or job",
   /* The ring shows the technologies; the number in the middle counts them.
      It used to read "20+ DSA Problems", which had nothing to do with the
@@ -97,14 +102,16 @@ export const aboutContent = {
 } as const;
 
 /* Every number here is one a visitor can verify by scrolling: three project
-   cards, two internships, eight certificates. The set used to claim four
-   projects next to a grid of three, and animated "20+ DSA" in 48px type. */
+   cards, two internships, and the certificates (counted from the data, so the
+   figure can't drift from the grid). The set used to claim four projects next
+   to a grid of three, and animated "20+ DSA" in 48px type. */
 export const statsContent = [
   { value: 3, label: "Projects built", exact: true },
   { value: 2, label: "Internships", exact: true },
-  { value: 8, label: "Certifications", exact: true },
+  { value: certificates.length, label: "Certifications", exact: true },
   { value: 100, label: "Practice problems solved", exact: false },
-] as const;
+  // A zero isn't worth a slot; it drops out until there's something to count.
+].filter((stat) => stat.value > 0);
 
 export const resumeCtaContent = {
   title: "Currently looking for an internship",

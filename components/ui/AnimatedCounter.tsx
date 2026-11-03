@@ -71,18 +71,18 @@ export function AnimatedCounter({
     >
       <p
         className={cn(
-          "text-4xl font-semibold tracking-tight text-slate-100 transition-colors duration-300 group-hover:text-blue-400 sm:text-5xl",
+          "text-4xl font-semibold tracking-tight text-stone-100 transition-colors duration-300 group-hover:text-amber-400 sm:text-5xl",
           numberClassName
         )}
       >
         <span ref={numberRef}>0</span>
         {!exact && (
-          <span className="ml-0.5 align-top text-xl text-slate-400 transition-colors duration-300 group-hover:text-blue-400 sm:text-2xl">
+          <span className="ml-0.5 align-top text-xl text-stone-400 transition-colors duration-300 group-hover:text-amber-400 sm:text-2xl">
             +
           </span>
         )}
       </p>
-      <p className="mt-2 text-sm font-medium text-slate-400">{label}</p>
+      <p className="mt-2 text-sm font-medium text-stone-400">{label}</p>
     </div>
   );
 }

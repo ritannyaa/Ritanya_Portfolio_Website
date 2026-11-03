@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { PageEntrance } from "@/components/effects/PageEntrance";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { BentoGrid, BentoItem } from "@/components/ui/BentoGrid";
@@ -8,11 +9,13 @@ import { certificates, certificatesIntro } from "@/lib/data/certificates";
 export const metadata: Metadata = {
   title: "Certificates",
   description:
-    "Course certificates from IBM, HackerRank, Simplilearn and Great Learning — most with a verify link.",
+    "Course certificates from IBM (via Coursera) and MongoDB, each with a verify link.",
   alternates: { canonical: "/certificates" },
 };
 
 export default function CertificatesPage() {
+  if (certificates.length === 0) notFound();
+
   return (
     <PageEntrance>
       <section

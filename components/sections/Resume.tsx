@@ -17,12 +17,12 @@ export function Resume() {
             {/* "I'm Available for Internship or Job" read like a banner ad.
                 Stating it as what he's doing, rather than what he is, is both
                 more specific and less pleading. */}
-            <h2 className="text-2xl font-bold text-slate-100 sm:text-3xl">
+            <h2 className="text-2xl font-bold text-stone-100 sm:text-3xl">
               Currently{" "}
               <span className="resume-highlight">looking</span> for an
               internship
             </h2>
-            <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-slate-400 sm:text-base">
+            <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-stone-400 sm:text-base">
               {resumeCtaContent.description}
             </p>
 

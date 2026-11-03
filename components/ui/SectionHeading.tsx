@@ -43,7 +43,7 @@ export function SectionHeading({
       {description && (
         <p
           data-reveal
-          className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg"
+          className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-stone-300 sm:text-lg"
         >
           {description}
         </p>

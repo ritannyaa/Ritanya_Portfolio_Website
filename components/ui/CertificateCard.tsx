@@ -33,7 +33,7 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
           className="object-cover"
         />
       </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/55 via-slate-900/10 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-stone-900/55 via-stone-900/10 to-transparent" />
     </>
   );
 
@@ -48,16 +48,16 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
           target="_blank"
           rel="noopener noreferrer"
           data-cursor="button"
-          className="relative block w-full overflow-hidden bg-slate-800 aspect-[4/3] transition-transform duration-150 active:scale-[0.98]"
+          className="relative block w-full overflow-hidden bg-stone-800 aspect-[4/3] transition-transform duration-150 active:scale-[0.98]"
           aria-label={`Verify ${certificate.title} on ${certificate.issuer}`}
         >
           {preview}
-          <span className="absolute right-3 top-3 inline-flex items-center justify-center rounded-full bg-white/80 p-2 text-slate-700 opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
+          <span className="absolute right-3 top-3 inline-flex items-center justify-center rounded-full bg-white/80 p-2 text-stone-700 opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
             <ExternalLink className="h-3.5 w-3.5" />
           </span>
         </a>
       ) : (
-        <div className="relative w-full overflow-hidden bg-slate-800 aspect-[4/3]">
+        <div className="relative w-full overflow-hidden bg-stone-800 aspect-[4/3]">
           {preview}
         </div>
       )}
@@ -67,16 +67,16 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
           <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-accent-soft)]">
             {certificate.issuer}
           </p>
-          <p className="shrink-0 text-xs tabular-nums text-slate-400">
+          <p className="shrink-0 text-xs tabular-nums text-stone-400">
             {certificate.date}
           </p>
         </div>
 
-        <h3 className="mt-1.5 text-base font-semibold leading-snug text-slate-100 transition-colors group-hover:text-blue-400">
+        <h3 className="mt-1.5 text-base font-semibold leading-snug text-stone-100 transition-colors group-hover:text-amber-400">
           {certificate.title}
         </h3>
 
-        <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">
+        <p className="mt-2 flex-1 text-sm leading-relaxed text-stone-400">
           {certificate.note}
         </p>
 
@@ -92,7 +92,7 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
               Verify
             </MagneticButton>
           ) : (
-            <p className="text-xs text-slate-400">Scan only — no verify link</p>
+            <p className="text-xs text-stone-400">Scan only — no verify link</p>
           )}
         </div>
       </div>

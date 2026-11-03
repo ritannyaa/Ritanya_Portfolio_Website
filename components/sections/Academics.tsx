@@ -28,14 +28,14 @@ export function Academics() {
                 {/* The decorative quote glyph is gone. It framed the opening
                     paragraph as a pull-quote of himself, which is the sort of
                     thing a template does and a person doesn't. */}
-                <p className="relative text-lg font-medium leading-relaxed text-slate-100 sm:text-xl">
+                <p className="relative text-lg font-medium leading-relaxed text-stone-100 sm:text-xl">
                   {lead}
                 </p>
 
                 {rest.map((p, i) => (
                   <p
                     key={i}
-                    className="mt-4 text-base leading-relaxed text-slate-400"
+                    className="mt-4 text-base leading-relaxed text-stone-400"
                   >
                     {p}
                   </p>
@@ -49,9 +49,9 @@ export function Academics() {
                   {aboutContent.highlights.map(({ label, body }) => (
                     <div
                       key={label}
-                      className="flex items-start gap-2.5 rounded-xl border border-white/10 bg-white/5 p-3 text-sm leading-snug text-slate-300"
+                      className="flex items-start gap-2.5 rounded-xl border border-white/10 bg-white/5 p-3 text-sm leading-snug text-stone-300"
                     >
-                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500" />
                       <span>
                         <strong className="font-semibold text-white">
                           {label}:
@@ -69,7 +69,7 @@ export function Academics() {
             <div className="h-full">
               <GlassCard className="flex h-full flex-col p-6 text-white sm:p-8">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-400">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-600 to-amber-400">
                     <GraduationCap className="h-5 w-5" />
                   </span>
                   {/* Was a second <h3>About Me</h3> inside the About Me
@@ -79,42 +79,42 @@ export function Academics() {
 
                 <ul className="mt-6 space-y-4">
                   <li className="flex items-start gap-3 border-b border-white/10 pb-4">
-                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-blue-300">
+                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-amber-300">
                       <GraduationCap className="h-4 w-4" />
                     </span>
                     <span>
-                      <span className="block text-xs font-medium uppercase tracking-wide text-slate-400">
+                      <span className="block text-xs font-medium uppercase tracking-wide text-stone-400">
                         Degree
                       </span>
-                      <span className="text-sm font-semibold leading-relaxed text-slate-100">
+                      <span className="text-sm font-semibold leading-relaxed text-stone-100">
                         {aboutContent.education.degree}
                       </span>
                     </span>
                   </li>
 
                   <li className="flex items-start gap-3 border-b border-white/10 pb-4">
-                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-blue-300">
+                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-amber-300">
                       <Building2 className="h-4 w-4" />
                     </span>
                     <span>
-                      <span className="block text-xs font-medium uppercase tracking-wide text-slate-400">
+                      <span className="block text-xs font-medium uppercase tracking-wide text-stone-400">
                         Institution
                       </span>
-                      <span className="text-sm leading-relaxed text-slate-100">
+                      <span className="text-sm leading-relaxed text-stone-100">
                         {aboutContent.education.institution}
                       </span>
                     </span>
                   </li>
 
                   <li className="flex items-start gap-3 border-b border-white/10 pb-4">
-                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-blue-300">
+                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-amber-300">
                       <CalendarDays className="h-4 w-4" />
                     </span>
                     <span>
-                      <span className="block text-xs font-medium uppercase tracking-wide text-slate-400">
+                      <span className="block text-xs font-medium uppercase tracking-wide text-stone-400">
                         Year
                       </span>
-                      <span className="text-sm leading-relaxed text-slate-100">
+                      <span className="text-sm leading-relaxed text-stone-100">
                         {aboutContent.education.year}
                       </span>
                     </span>
@@ -124,14 +124,14 @@ export function Academics() {
                       in one place, instead of contradicting itself between the
                       Contact section and the footer. */}
                   <li className="flex items-start gap-3">
-                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-blue-300">
+                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-amber-300">
                       <MapPin className="h-4 w-4" />
                     </span>
                     <span>
-                      <span className="block text-xs font-medium uppercase tracking-wide text-slate-400">
+                      <span className="block text-xs font-medium uppercase tracking-wide text-stone-400">
                         Based in
                       </span>
-                      <span className="text-sm leading-relaxed text-slate-100">
+                      <span className="text-sm leading-relaxed text-stone-100">
                         {siteConfig.location}
                       </span>
                     </span>

@@ -16,15 +16,17 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
-          color: "#ffffff",
+          background: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
+          // Near-black, not white: the accent is light, so a white glyph on it
+          // is unreadable at 32px. Mirrors --color-on-accent in globals.css.
+          color: "#0a0a0b",
           fontSize: 20,
           fontWeight: 700,
           letterSpacing: -1,
           borderRadius: 7,
         }}
       >
-        Y
+        R
       </div>
     ),
     size

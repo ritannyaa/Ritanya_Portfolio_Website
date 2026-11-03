@@ -6,7 +6,7 @@ import { ExperienceCard } from "@/components/ui/ExperienceCard";
 import { experience, experienceIntro } from "@/lib/data/experience";
 
 export const metadata: Metadata = {
-  // The "— Yahesh M" suffix comes from the title template in app/layout.tsx.
+  // The "— Ritanya B" suffix comes from the title template in app/layout.tsx.
   title: "Experience",
   description:
     "Two internships: full-stack development at a startup, and enterprise network infrastructure at Cognizant.",

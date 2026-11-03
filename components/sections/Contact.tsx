@@ -21,13 +21,13 @@ const contactRows: ContactRow[] = [
   {
     label: "LinkedIn",
     icon: Linkedin,
-    value: "in/yahesh-m",
+    value: "in/ritanya-balamurugan",
     href: siteConfig.linkedin,
   },
   {
     label: "GitHub",
     icon: Github,
-    value: "@yaheshmaheshwaran",
+    value: "@ritannyaa",
     href: siteConfig.github,
   },
   {
@@ -38,9 +38,9 @@ const contactRows: ContactRow[] = [
 ];
 
 const fieldClass =
-  "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-slate-100 outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20";
+  "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-stone-100 outline-none transition placeholder:text-stone-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20";
 
-const labelClass = "mb-1.5 block text-sm font-medium text-slate-300";
+const labelClass = "mb-1.5 block text-sm font-medium text-stone-300";
 
 export function Contact() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
@@ -91,7 +91,7 @@ export function Contact() {
           <div className="glass-card flex h-full flex-col p-6 text-white sm:p-8">
             <div className="relative z-10 flex h-full flex-col">
               <h3 className="text-lg font-semibold">Where to find me</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">
+              <p className="mt-2 text-sm leading-relaxed text-stone-400">
                 Email is fastest. LinkedIn works too.
               </p>
 
@@ -103,10 +103,10 @@ export function Contact() {
                         <Icon className="h-4 w-4" />
                       </span>
                       <span>
-                        <span className="block text-xs font-medium uppercase tracking-wide text-slate-400">
+                        <span className="block text-xs font-medium uppercase tracking-wide text-stone-400">
                           {label}
                         </span>
-                        <span className="text-sm leading-relaxed text-slate-100">
+                        <span className="text-sm leading-relaxed text-stone-100">
                           {value}
                         </span>
                       </span>
@@ -149,7 +149,7 @@ export function Contact() {
           </div>
 
           <div className="glass-card p-6 sm:p-8">
-            <h3 className="mb-5 text-lg font-semibold text-slate-100">
+            <h3 className="mb-5 text-lg font-semibold text-stone-100">
               Or send it from here
             </h3>
 

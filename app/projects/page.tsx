@@ -6,7 +6,7 @@ import { ProjectCard } from "@/components/ui/ProjectCard";
 import { projects, projectsIntro } from "@/lib/data/projects";
 
 export const metadata: Metadata = {
-  // The "— Yahesh M" suffix comes from the title template in app/layout.tsx.
+  // The "— Ritanya B" suffix comes from the title template in app/layout.tsx.
   title: "Projects",
   description:
     "Three systems: an IaC security scanner, an EV battery health platform, and a personal finance pipeline — what each one is and which part was the hard problem.",

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/data/site";
+import { certificates } from "@/lib/data/certificates";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
@@ -23,11 +24,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.6,
     },
-    {
-      url: `${siteConfig.url}/certificates`,
-      lastModified,
-      changeFrequency: "yearly",
-      priority: 0.6,
-    },
+    // Listed only while there's something on it — an empty set 404s.
+    ...(certificates.length > 0
+      ? [
+          {
+            url: `${siteConfig.url}/certificates`,
+            lastModified,
+            changeFrequency: "yearly" as const,
+            priority: 0.6,
+          },
+        ]
+      : []),
   ];
 }

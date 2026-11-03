@@ -270,7 +270,7 @@ export function Hero() {
                 strokeLinejoin="round"
               />
             </svg>
-            <span className="mkt-cursor-label">Yahesh</span>
+            <span className="mkt-cursor-label">Ritanya</span>
           </div>
         </div>
 
