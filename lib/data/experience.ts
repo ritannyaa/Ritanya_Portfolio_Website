@@ -34,7 +34,10 @@ export const experience: ExperienceItem[] = [
       "Worked to their branching, review and deploy conventions instead of my own",
       "Wrote the API and implementation docs",
     ],
-    certificateImage: "/certificates/idivpl-full-stack.jpg",
+    // ?v=2 cache-busts the next/image optimizer and the browser: the file
+    // was replaced in place, so the bare path kept serving the old optimized
+    // blob from .next/cache/images. Bump the number whenever the file changes.
+    certificateImage: "/certificates/idivpl-full-stack.jpg?v=2",
     // No external link yet — the card falls back to opening the certificate
     // image, which is honest. It used to link to example.com.
   },

@@ -24,9 +24,9 @@ export const siteConfig = {
   resumeUrl:
     "https://drive.google.com/file/d/1lRq4DURBk0uSGj-DQ2bSbTGvIulCVm_U/view?usp=share_link",
   emailjs: {
-    publicKey: "pOGDSOwUFPiIxrTC1",
-    serviceId: "service_chb4oni",
-    templateId: "template_tmx3j6h",
+    publicKey: "N1dnOcOGhMHOqjuG9",
+    serviceId: "service_r57pyc6",
+    templateId: "template_bl05gcb",
   },
 } as const;
 
