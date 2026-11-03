@@ -27,11 +27,11 @@ export function Resume() {
             </p>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <MagneticButton href={siteConfig.resumeUrl} variant="secondary" external>
+              <MagneticButton href="https://drive.google.com/file/d/1RwFKAFA1rHPumOngEMkVnNP7cDxuawce/view?usp=sharing" variant="secondary" external>
                 <FileText className="h-4 w-4" />
                 Read my resume
               </MagneticButton>
-              <MagneticButton href="#contact-section" variant="outline">
+              <MagneticButton href="mailto:ritanyabtm@gmail.com" variant="outline">
                 <Mail className="h-4 w-4" />
                 Email me
               </MagneticButton>

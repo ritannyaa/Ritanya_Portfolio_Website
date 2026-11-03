@@ -38,21 +38,4 @@ export const experience: ExperienceItem[] = [
     // No external link yet — the card falls back to opening the certificate
     // image, which is honest. It used to link to example.com.
   },
-  {
-    id: "cognizant-networking",
-    role: "Networking",
-    organization: "Cognizant",
-    duration: "Jun 2026",
-    type: "Internship",
-    description:
-      "Two weeks with the Network Infrastructure team — the layer everything else quietly depends on. I monitored network performance, worked connectivity issues, and configured VLANs and routing in a lab environment, while getting a look at how firewalls, VPNs and cloud networking fit together at enterprise scale.",
-    takeaway:
-      "The part I didn't expect to care about was ITIL incident management. How an org routes and closes an incident is its own kind of system design.",
-    highlights: [
-      "Configured VLANs, IP addressing and basic routing protocols in a lab",
-      "Monitored performance and availability with the team's tooling",
-      "Built a working picture of hybrid networking across Azure and AWS",
-    ],
-    certificateImage: "/certificates/cognizant-networking.jpg",
-  },
 ];

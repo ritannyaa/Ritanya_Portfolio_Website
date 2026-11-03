@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { experience, experienceIntro } from "@/lib/data/experience";
+import { cn } from "@/lib/utils/cn";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { BentoGrid, BentoItem } from "@/components/ui/BentoGrid";
 import { ExperienceCard } from "@/components/ui/ExperienceCard";
@@ -9,6 +10,7 @@ import { MagneticButton } from "@/components/ui/MagneticButton";
 const SHOWN = 2;
 
 export function Experience() {
+  const shown = experience.slice(0, SHOWN);
   return (
     <section
       id="experience-section"
@@ -23,8 +25,16 @@ export function Experience() {
           description={experienceIntro}
         />
 
-        <BentoGrid stagger className="grid-cols-1 md:grid-cols-2">
-          {experience.slice(0, SHOWN).map((item) => (
+        {/* Same single-entry centering as /experience — one card in a
+            two-column grid would sit on the left. */}
+        <BentoGrid
+          stagger
+          className={cn(
+            "grid-cols-1",
+            shown.length > 1 ? "md:grid-cols-2" : "md:mx-auto md:max-w-2xl"
+          )}
+        >
+          {shown.map((item) => (
             <BentoItem key={item.id}>
               <ExperienceCard item={item} />
             </BentoItem>

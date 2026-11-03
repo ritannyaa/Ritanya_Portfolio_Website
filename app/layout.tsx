@@ -144,8 +144,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${spaceGrotesk.variable} ${urbanist.variable}`}
-    >
+      className={`${inter.variable} ${spaceGrotesk.variable} ${urbanist.variable}`}>
       <body className="font-sans">
         <script
           type="application/ld+json"

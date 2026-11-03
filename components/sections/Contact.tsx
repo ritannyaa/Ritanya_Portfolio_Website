@@ -21,13 +21,13 @@ const contactRows: ContactRow[] = [
   {
     label: "LinkedIn",
     icon: Linkedin,
-    value: "in/ritanya-balamurugan",
+    value: "Linkedin/Ritanya Balamurugan",
     href: siteConfig.linkedin,
   },
   {
     label: "GitHub",
     icon: Github,
-    value: "@ritannyaa",
+    value: "GitHub/Ritanya Balamurugan",
     href: siteConfig.github,
   },
   {
@@ -135,7 +135,7 @@ export function Contact() {
               </ul>
 
               <div className="mt-6 flex flex-wrap gap-2 pt-2">
-                <MagneticButton href={siteConfig.resumeUrl} variant="secondary" external>
+                <MagneticButton href="https://drive.google.com/file/d/1RwFKAFA1rHPumOngEMkVnNP7cDxuawce/view?usp=sharing" variant="secondary" external>
                   Resume
                 </MagneticButton>
                 <MagneticButton href={siteConfig.linkedin} variant="outline" external>

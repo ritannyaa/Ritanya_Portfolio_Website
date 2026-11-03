@@ -4,6 +4,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { BentoGrid, BentoItem } from "@/components/ui/BentoGrid";
 import { ExperienceCard } from "@/components/ui/ExperienceCard";
 import { experience, experienceIntro } from "@/lib/data/experience";
+import { cn } from "@/lib/utils/cn";
 
 export const metadata: Metadata = {
   // The "— Ritanya B" suffix comes from the title template in app/layout.tsx.
@@ -29,7 +30,18 @@ export default function ExperiencePage() {
             description={experienceIntro}
           />
 
-          <BentoGrid stagger className="grid-cols-1 md:grid-cols-2">
+          {/* One entry in a two-column grid parks the card on the left half;
+              with a single entry the grid centers at a readable width instead.
+              A second entry flips it back to two columns automatically. */}
+          <BentoGrid
+            stagger
+            className={cn(
+              "grid-cols-1",
+              experience.length > 1
+                ? "md:grid-cols-2"
+                : "md:mx-auto md:max-w-2xl"
+            )}
+          >
             {experience.map((item) => (
               <BentoItem key={item.id}>
                 <ExperienceCard item={item} />
